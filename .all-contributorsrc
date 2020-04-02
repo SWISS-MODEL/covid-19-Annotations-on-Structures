@@ -13,6 +13,15 @@
       "contributions": [
         "projectManagement"
       ]
+    },
+    {
+      "login": "xrobin",
+      "name": "Xavier Robin",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/1047170?v=4",
+      "profile": "https://github.com/xrobin",
+      "contributions": [
+        "tool"
+      ]
     }
   ],
   "contributorsPerLine": 7,
