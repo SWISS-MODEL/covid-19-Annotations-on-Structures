@@ -13,6 +13,15 @@
       "contributions": [
         "projectManagement"
       ]
+    },
+    {
+      "login": "bienchen",
+      "name": "bienchen",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/69343?v=4",
+      "profile": "https://github.com/bienchen",
+      "contributions": [
+        "tool"
+      ]
     }
   ],
   "contributorsPerLine": 7,
