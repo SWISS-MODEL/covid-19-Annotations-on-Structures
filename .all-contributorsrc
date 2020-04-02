@@ -1,0 +1,24 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "gtauriello",
+      "name": "Gerardo Tauriello",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/25968022?v=4",
+      "profile": "https://github.com/gtauriello",
+      "contributions": [
+        "projectManagement"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "covid-19-Annotations-on-Structures",
+  "projectOwner": "SWISS-MODEL",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}
