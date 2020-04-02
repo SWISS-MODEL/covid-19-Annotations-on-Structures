@@ -21,7 +21,31 @@ We will provide an interface to display annotations in a similar fashion as done
 
 - Follow the biohackathon's [code of conduct](https://github.com/virtual-biohackathons/covid-19-bh20/blob/master/CODE_OF_CONDUCT.md)
 - Acknowledge the sources for your data
-- Add license information if your provided code has restrictions incompatible with the MIT license used here
+- Add license information if your provided code has restrictions incompatible with the [MIT license used here](LICENSE)
+- Provide annotation data with a description of what the data is
+- Provide documentation on how to run/use any contributed script/code and example input/output
+
+## SWISS-MODEL annotation system
+
+**NOTE: this is work-in-progress and subject to change.**
+
+The beta-server of SWISS-MODEL will be used to allow user-annotations to be uploaded (more details to follow once this is enabled).
+
+The annotation format is a plain-text format:
+- One line per annotation
+- Each annotation will consist of 5 or 6 space-, comma- or tab-separated values:
+  1. ID (UniProtKB AC or MD5 checksum of the sequence)
+  2. Start position (1-based)
+  3. End position
+  4. Color value
+  5. Reference (optional)
+  6. Annotation comment
+- Example:
+  ```
+  P0DTD1	3400	3450	#FF00FF	https://swissmodel.expasy.org/repository/	My Awesome Annotation
+  P0DTC2	230	330	#FFA500	One more!
+  ```
+- UniProtKB ACs with links can be found in our [SARS-CoV-2 page](https://swissmodel.expasy.org/repository/species/2697049)
 
 ## Context
 
