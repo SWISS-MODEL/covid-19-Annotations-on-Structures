@@ -44,11 +44,11 @@ Follow the biohackathon's [code of conduct](https://github.com/virtual-biohackat
 
 **NOTE: this is work-in-progress and subject to change.**
 
-The beta-server of SWISS-MODEL will be used to allow user-annotations to be uploaded (more details to follow once this is enabled). The annotations will be displayed in a similar fashion as done in our SWISS-MODEL repository (as in [this example](https://swissmodel.expasy.org/repository/uniprot/B8XC04)).
+The beta-server of SWISS-MODEL will be used to allow users to upload annotations (more details to follow once this is enabled). The annotations will be displayed in a similar fashion as done in our SWISS-MODEL repository (as in [this example](https://swissmodel.expasy.org/repository/uniprot/B8XC04)).
 
 The annotation format is a plain-text format:
 - One line per annotation
-- Each annotation will consist of 5 or 6 space-, comma- or tab-separated values:
+- Each annotation will consist of 5 or 6 comma- or tab-separated values:
   1. ID (UniProtKB AC or MD5 checksum of the sequence)
   2. Start position (1-based)
   3. End position
@@ -58,9 +58,11 @@ The annotation format is a plain-text format:
 - Example:
   ```
   P0DTD1	3400	3450	#FF00FF	https://swissmodel.expasy.org/repository/	My Awesome Annotation
-  P0DTC2	230	330	#FFA500	One more!
+  P0DTC2	230	330	#FFA500	A text reference	One more!
   ```
-- UniProtKB ACs with links can be found in our [SARS-CoV-2 page](https://swissmodel.expasy.org/repository/species/2697049)
+- UniProtKB ACs with links can be found in [UniProtKB](https://covid-19.uniprot.org/)
+  - Our [SARS-CoV-2 page](https://swissmodel.expasy.org/repository/species/2697049) shows mapping to mature proteins and the correspondance to RefSeq and GenBank.
+  - For cleaved proteins, use the parent protein. For instance an annotation on nsp3 (Non-structural protein 3) must be reported on P0DTD1 (the "parent" protein) with an offset of 818 (as nsp3 start on position 819 of P0DTD1).
 
 If anyone wants to work on alternative ways to visualize the protein structures, we are happy to provide the structures. Also we are actively working on extending the structural coverage of the SARS-CoV-2 proteome by using protein predictions from colleagues participating in CASP.
 
