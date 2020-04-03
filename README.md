@@ -23,6 +23,7 @@ For inspiration, here are some annotation ideas with the expected work to be don
   - followups: add possibility to filter results (e.g. only from country X or certain confidence), process into entropies, ...
 - Process glycosylation sites and map expected changes of accessibility onto the structures (see [here](https://twitter.com/Olivercgrant/status/1243576788514725888), [here](https://twitter.com/rommieamaro/status/1241810976866840577?s=11), [here](https://twitter.com/ElisaTelisa/status/1244174688437374978) and [here](https://www.biorxiv.org/content/10.1101/2020.03.28.013276v1.full.pdf) for work on this).
 - Go beyond the UniProt-annotations which we already display. E.g. for PL-PRO of SARS-CoV we found annotations in the literature (see Fig. 1 of [Báez-Santos et al 2015](https://doi.org/10.1016/j.antiviral.2014.12.015)) which go way beyond what we find in the [UniProt-annotations](https://covid-19.uniprot.org/).
+- Interact with the various [other projects in the Hackathon](https://github.com/virtual-biohackathons/covid-19-bh20/wiki) (e.g. Pangenome, Knowledge Graph, Virtual Screening, Phylogeny, ...)
 
 This list is by no means exhaustive and we can imagine that a lot more useful annotations can be found by parsing the ever-increasing literature on SARS-CoV-2.
 
