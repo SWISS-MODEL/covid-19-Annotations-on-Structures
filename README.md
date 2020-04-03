@@ -11,6 +11,10 @@ We mainly hope to receive two types of contributions:
 1. Find/generate relevant sequence data (see [ideas below](#ideas-for-annotations)) to be displayed on structures (see [section on SWISS-MODEL's annotation system](#swiss-model-annotation-system)). This should be scripted to enable automated fetching of the latest data.
 2. Write reusable scripts to map the sequence data onto the frame of reference of proteins (this might need translation from position on genome data to position on proteins of SARS-CoV-2 as listed [here](https://swissmodel.expasy.org/repository/species/2697049)). These scripts are expected to be useful for the scripts in point 1.
 
+Additional topics of interest:
+- For visualization experts: alternative ways to visualize the protein structures.
+- For RDF experts: define an RDF ontology and map our json-data ([example](https://swissmodel.expasy.org/repository/uniprot/P59594.json)) to RDF to be used in other knowledge graph efforts. Some efforts exist from [PDBj](https://pdbj.org/help/rdf) to map structures to RDF but they focus on experimental meta data while we consider structural coverage of the proteins more relevant. Probably [SIFTS mappings](https://pdbj.org/news/20160629) are the better starting point here.
+
 ## Ideas for annotations
 
 For inspiration, here are some annotation ideas with the expected work to be done:
