@@ -13,7 +13,7 @@ We mainly hope to receive two types of contributions:
 
 Additional topics of interest:
 - For visualization experts: alternative ways to visualize the protein structures.
-- For RDF experts: define an RDF ontology and map our json-data ([example](https://swissmodel.expasy.org/repository/uniprot/P59594.json)) to RDF to be used in other knowledge graph efforts. Some efforts exist from [PDBj](https://pdbj.org/help/rdf) to map structures to RDF but they focus on experimental meta data while we consider structural coverage of the proteins more relevant. Probably [SIFTS mappings](https://pdbj.org/news/20160629) are the better starting point here.
+- For RDF/JSON-LD experts: define an RDF ontology and map our json-data ([example](https://swissmodel.expasy.org/repository/uniprot/P59594.json)) to RDF to be used in other knowledge graph efforts. Some efforts exist from [PDBj](https://pdbj.org/help/rdf) to map structures to RDF but they focus on experimental meta data while we consider structural coverage of the proteins more relevant. Probably [SIFTS mappings](https://pdbj.org/news/20160629) are the better starting point here. With a minimal "@context" section referring to UniProt we might also be able to turn our existing json to valid json-ld.
 
 ## Ideas for annotations
 
