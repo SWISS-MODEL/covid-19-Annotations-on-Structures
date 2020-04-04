@@ -45,7 +45,9 @@ Follow the biohackathon's [code of conduct](https://github.com/virtual-biohackat
 
 **NOTE: this is work-in-progress and subject to change.**
 
-The beta-server of SWISS-MODEL will be used to allow users to upload annotations (more details to follow once this is enabled). The annotations will be displayed in a similar fashion as done in our SWISS-MODEL repository (as in [this example](https://swissmodel.expasy.org/repository/uniprot/B8XC04)).
+The beta-server of SWISS-MODEL is used to allow users to upload annotations: https://beta.swissmodel.expasy.org/repository/covid_annotation_upload
+
+Both the user annotations and the display of the viral polyprotein ([R1AB_SARS2](https://beta.swissmodel.expasy.org/repository/uniprot/P0DTD1)) are still work-in-progress and may have bugs. If you find problems with those prototype SWISS-MODEL features, please add issues to this github project and we will try to address them as soon as possible.
 
 The annotation format is a plain-text format:
 - One line per annotation
