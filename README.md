@@ -20,7 +20,7 @@ Additional topics of interest:
 For inspiration, here are some annotation ideas with the expected work to be done:
 - Include variations from processed data in [nextstrain](https://nextstrain.org/ncov). Requires:
   - parse [json data](https://data.nextstrain.org/ncov.json) following their [dev docs](https://github.com/nextstrain/ncov/blob/master/DEV_DOCS.md)
-  - map variations onto UniProtKB ACs used in [SWISS-MODEL](https://swissmodel.expasy.org/repository/species/2697049)
+  - map variations onto UniProtKB ACs used in [SWISS-MODEL](https://swissmodel.expasy.org/repository/species/2697049) (the work done at the [UCSC Genome Browser](http://genome.ucsc.edu/goldenPath/newsarch.html#040320) could be helpful for this)
   - define colors and annotation texts variations
   - test using [SWISS-MODEL's annotation system](#swiss-model-annotation-system)
   - properly acknowledge source of data (see also "Data" section in nextstrain's [README](https://github.com/nextstrain/ncov/blob/master/README.md))
