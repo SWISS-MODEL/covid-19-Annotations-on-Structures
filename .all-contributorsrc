@@ -69,6 +69,16 @@
       "contributions": [
         "ideas"
       ]
+    },
+    {
+      "login": "DCGenomics",
+      "name": "Ben Busby",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/5738421?v=4",
+      "profile": "http://biohackathons.github.io",
+      "contributions": [
+        "ideas",
+        "content"
+      ]
     }
   ],
   "contributorsPerLine": 7,
