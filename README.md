@@ -8,29 +8,13 @@ This repository collects contributions related to the ["Annotations on Structure
 The context is [SWISS-MODEL's](https://swissmodel.expasy.org) involvement in an [EU project to combat COVID-19](https://www.sib.swiss/about-sib/news/10659). To accelerate our plan to map relevant annotations onto those structures, we collect tools/platforms which can automatically generate such annotations based on the latest data.
 
 We mainly hope to receive two types of contributions:
-1. Find/generate relevant sequence data (see [ideas below](#ideas-for-annotations)) to be displayed on structures (see [section on SWISS-MODEL's annotation system](#swiss-model-annotation-system)). This should be scripted to enable automated fetching of the latest data.
+1. Find/generate relevant sequence data (see [issues list](https://github.com/SWISS-MODEL/covid-19-Annotations-on-Structures/issues) for inspirational ideas) to be displayed on structures (see [section on SWISS-MODEL's annotation system](#swiss-model-annotation-system)). This should be scripted to enable automated fetching of the latest data.
 2. Write reusable scripts to map the sequence data onto the frame of reference of proteins (this might need translation from position on genome data to position on proteins of SARS-CoV-2 as listed [here](https://swissmodel.expasy.org/repository/species/2697049)). These scripts are expected to be useful for the scripts in point 1.
 
 Additional topics of interest:
 - For visualization experts: alternative ways to visualize the protein structures.
 - For RDF/JSON-LD experts: define an RDF ontology and map our json-data ([example](https://swissmodel.expasy.org/repository/uniprot/P59594.json)) to RDF to be used in other knowledge graph efforts. Some efforts exist from [PDBj](https://pdbj.org/help/rdf) to map structures to RDF but they focus on experimental meta data while we consider structural coverage of the proteins more relevant. Probably [SIFTS mappings](https://pdbj.org/news/20160629) are the better starting point here. With a minimal "@context" section referring to UniProt we might also be able to turn our existing json to valid json-ld.
-
-## Ideas for annotations
-
-For inspiration, here are some annotation ideas with the expected work to be done:
-- Include variations from processed data in [nextstrain](https://nextstrain.org/ncov). Requires:
-  - parse [json data](https://data.nextstrain.org/ncov.json) following their [dev docs](https://github.com/nextstrain/ncov/blob/master/DEV_DOCS.md)
-  - map variations onto UniProtKB ACs used in [SWISS-MODEL](https://swissmodel.expasy.org/repository/species/2697049) (the work done at the [UCSC Genome Browser](http://genome.ucsc.edu/goldenPath/newsarch.html#040320) could be helpful for this)
-  - define colors and annotation texts variations
-  - test using [SWISS-MODEL's annotation system](#swiss-model-annotation-system)
-  - properly acknowledge source of data (see also "Data" section in nextstrain's [README](https://github.com/nextstrain/ncov/blob/master/README.md))
-  - followups: add possibility to filter results (e.g. only from country X or certain confidence), process into entropies, ...
-- Process glycosylation sites and map expected changes of accessibility onto the structures (see [here](https://twitter.com/Olivercgrant/status/1243576788514725888), [here](https://twitter.com/rommieamaro/status/1241810976866840577?s=11), [here](https://twitter.com/ElisaTelisa/status/1244174688437374978) and [here](https://www.biorxiv.org/content/10.1101/2020.03.28.013276v1.full.pdf) for work on this).
-  - One option is to use the [GlyConnect SARS-CoV-2](https://glyconnect.expasy.org/browser/references/2917) page and their [API](https://glyconnect.expasy.org/api/docs). Example JSON output exists for [HEK293](https://glyconnect.expasy.org/api/glycosylations?taxonomy=Severe%20acute%20respiratory%20syndrome%20coronavirus%202%20(2019-nCoV)&protein=Recombinant%20Spike%20glycoprotein%20(HEK293)%20-%20DRAFT%20DATA) or [BTI-Tn-5B1-4](https://glyconnect.expasy.org/api/glycosylations?taxonomy=Severe%20acute%20respiratory%20syndrome%20coronavirus%202%20(2019-nCoV)&protein=Recombinant%20Spike%20glycoprotein%20(BTI-Tn-5B1-4)%20-%20DRAFT%20DATA).
-- Go beyond the UniProt-annotations which we already display. E.g. for PL-PRO of SARS-CoV we found annotations in the literature (see Fig. 1 of [Báez-Santos et al 2015](https://doi.org/10.1016/j.antiviral.2014.12.015)) which go way beyond what we find in the [UniProt-annotations](https://covid-19.uniprot.org/).
-- Interact with the various [other projects in the Hackathon](https://github.com/virtual-biohackathons/covid-19-bh20/wiki) (e.g. Pangenome, Knowledge Graph, Virtual Screening, Phylogeny, MachineLearning, ...)
-
-This list is by no means exhaustive and we can imagine that a lot more useful annotations can be found by parsing the ever-increasing literature on SARS-CoV-2.
+- For protein modelling experts: custom modeling of proteins of interest (e.g. using careful expert-curated target-template alignments or combination of templates)
 
 ## Preferred technologies
 
