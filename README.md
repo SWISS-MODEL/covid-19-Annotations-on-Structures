@@ -1,6 +1,6 @@
 # Mapping sequence data onto structures
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-8-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-9-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 This repository collects contributions related to the ["Annotations on Structures" topic](https://github.com/virtual-biohackathons/covid-19-bh20/wiki/Annotations-on-Structures) in the [COVID-19 Biohackathon April 5-11 2020](https://github.com/virtual-biohackathons/covid-19-bh20).
@@ -81,6 +81,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   </tr>
   <tr>
     <td align="center"><a href="http://biohackathons.github.io"><img src="https://avatars0.githubusercontent.com/u/5738421?v=4" width="100px;" alt=""/><br /><sub><b>Ben Busby</b></sub></a><br /><a href="#ideas-DCGenomics" title="Ideas, Planning, & Feedback">🤔</a> <a href="#content-DCGenomics" title="Content">🖋</a></td>
+    <td align="center"><a href="https://github.com/lnblum"><img src="https://avatars2.githubusercontent.com/u/51452159?v=4" width="100px;" alt=""/><br /><sub><b>Laura Blum</b></sub></a><br /><a href="#content-lnblum" title="Content">🖋</a></td>
   </tr>
 </table>
 
