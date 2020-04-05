@@ -69,6 +69,15 @@
       "contributions": [
         "ideas"
       ]
+    },
+    {
+      "login": "lnblum",
+      "name": "Laura Blum",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/51452159?v=4",
+      "profile": "https://github.com/lnblum",
+      "contributions": [
+        "content"
+      ]
     }
   ],
   "contributorsPerLine": 7,

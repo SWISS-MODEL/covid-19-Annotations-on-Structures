@@ -1,6 +1,6 @@
 # Mapping sequence data onto structures
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-7-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-8-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 This repository collects contributions related to the ["Annotations on Structures" topic](https://github.com/virtual-biohackathons/covid-19-bh20/wiki/Annotations-on-Structures) in the [COVID-19 Biohackathon April 5-11 2020](https://github.com/virtual-biohackathons/covid-19-bh20).
@@ -78,6 +78,9 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/schdaude"><img src="https://avatars3.githubusercontent.com/u/4851123?v=4" width="100px;" alt=""/><br /><sub><b>schdaude</b></sub></a><br /><a href="#tool-schdaude" title="Tools">🔧</a></td>
     <td align="center"><a href="https://github.com/BarbaraTerlouw"><img src="https://avatars0.githubusercontent.com/u/47810869?v=4" width="100px;" alt=""/><br /><sub><b>BarbaraTerlouw</b></sub></a><br /><a href="#ideas-BarbaraTerlouw" title="Ideas, Planning, & Feedback">🤔</a></td>
     <td align="center"><a href="https://github.com/vprobon"><img src="https://avatars1.githubusercontent.com/u/49338525?v=4" width="100px;" alt=""/><br /><sub><b>Vasilis J Promponas</b></sub></a><br /><a href="#ideas-vprobon" title="Ideas, Planning, & Feedback">🤔</a></td>
+  </tr>
+  <tr>
+    <td align="center"><a href="https://github.com/lnblum"><img src="https://avatars2.githubusercontent.com/u/51452159?v=4" width="100px;" alt=""/><br /><sub><b>Laura Blum</b></sub></a><br /><a href="#content-lnblum" title="Content">🖋</a></td>
   </tr>
 </table>
 
