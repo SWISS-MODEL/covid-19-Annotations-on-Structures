@@ -42,6 +42,15 @@
         "tool",
         "design"
       ]
+    },
+    {
+      "login": "schdaude",
+      "name": "schdaude",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/4851123?v=4",
+      "profile": "https://github.com/schdaude",
+      "contributions": [
+        "tool"
+      ]
     }
   ],
   "contributorsPerLine": 7,
