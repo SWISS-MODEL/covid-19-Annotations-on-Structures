@@ -49,6 +49,7 @@ The annotation format is a plain-text format:
   ```
 - UniProtKB ACs with links can be found in [UniProtKB](https://covid-19.uniprot.org/)
   - Our [SARS-CoV-2 page](https://swissmodel.expasy.org/repository/species/2697049) shows mapping to mature proteins and the correspondence to RefSeq and GenBank.
+  - We also have a [list of all SARS-CoV-2 proteins](https://beta.swissmodel.expasy.org/repository/species/2697049/list) that shows an overview of the ACs and their structural coverage.
   - For cleaved proteins, use the parent protein. For instance an annotation on nsp3 (Non-structural protein 3) must be reported on P0DTD1 (the "parent" protein) with an offset of 818 (as nsp3 start on position 819 of P0DTD1).
   - ViralZone has a well described overview of the proteome [here](https://viralzone.expasy.org/8996).
   - We propose to ignore the shorter polyprotein (P0DTC1, R1A_SARS2) as it's cleaved into the same mature proteins as the longer one (P0DTD1, R1AB_SARS2) with the exception of a very short peptide (Non-structural protein 11 (nsp11), [YP_009725312.1](https://www.ncbi.nlm.nih.gov/protein/YP_009725312.1)).
