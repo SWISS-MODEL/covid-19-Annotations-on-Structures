@@ -2,7 +2,9 @@ First of all, thanks for taking the time to contribute! 🎉👍
 
 Things to keep in mind when contributing to the project:
 - Follow the biohackathon's [code of conduct](https://github.com/virtual-biohackathons/covid-19-bh20/blob/master/CODE_OF_CONDUCT.md).
-- Describe each new effort as early as possible in a new issue or pull request here to avoid duplication of work. Also use issues to propose annotation efforts which you are not actively working on.
+- Describe each new effort as early as possible in a new issue or pull request here to avoid duplication of work. Notes on issues:
+  - Use issues to propose annotation efforts which you are not actively working on.
+  - Additional annotations are labaled as "enhancement", ongoing efforts as "in progress" and problems as "bug"
 - Keep each annotation effort in a separate subfolder of this repository with a README.md file describing it.
 - Acknowledge the sources for your data.
 - Add license information if your provided code has restrictions incompatible with the [MIT license used here](LICENSE).
