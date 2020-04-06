@@ -1,7 +1,7 @@
 import matplotlib as mpl
 import re
 import requests
-
+from . import uniprot
 
 class Annotation:
     """
@@ -61,8 +61,7 @@ class Annotation:
         """
 
         # check input
-        ac_pat = "[OPQ][0-9][A-Z0-9]{3}[0-9]|[A-NR-Z][0-9]([A-Z][A-Z0-9]{2}[0-9]){1,2}"
-        if not re.match(ac_pat, uniprot_ac):
+        if not uniprot.valid_uniprot_ac_pattern(uniprot_ac):
             raise ValueError("uniprot_ac is invalid")
 
         if isinstance(rnum, int):
@@ -123,6 +122,9 @@ class Annotation:
         n = len(self.uniprot_acs)
         formatted_annos = [self._format_anno(idx) for idx in range(n)]
         return "\n".join(formatted_annos)
+
+    def __len__(self):
+        return len(self.annotations)
 
     def _format_anno(self, idx):
         if idx < 0 or idx >= len(self.uniprot_acs):
