@@ -48,8 +48,11 @@ The annotation format is a plain-text format:
   P0DTC2	230	330	#FFA500	A text reference	One more!
   ```
 - UniProtKB ACs with links can be found in [UniProtKB](https://covid-19.uniprot.org/)
-  - Our [SARS-CoV-2 page](https://swissmodel.expasy.org/repository/species/2697049) shows mapping to mature proteins and the correspondance to RefSeq and GenBank.
+  - Our [SARS-CoV-2 page](https://swissmodel.expasy.org/repository/species/2697049) shows mapping to mature proteins and the correspondence to RefSeq and GenBank.
   - For cleaved proteins, use the parent protein. For instance an annotation on nsp3 (Non-structural protein 3) must be reported on P0DTD1 (the "parent" protein) with an offset of 818 (as nsp3 start on position 819 of P0DTD1).
+  - ViralZone has a well described overview of the proteome [here](https://viralzone.expasy.org/8996).
+  - We propose to ignore the shorter polyprotein (P0DTC1, R1A_SARS2) as it's cleaved into the same mature proteins as the longer one (P0DTD1, R1AB_SARS2) with the exception of a very short peptide (Non-structural protein 11 (nsp11), [YP_009725312.1](https://www.ncbi.nlm.nih.gov/protein/YP_009725312.1)).
+  - Two proteins of unknown function ([P0DTD2](https://covid-19.uniprot.org/uniprotkb/P0DTD2) and [P0DTD3](https://covid-19.uniprot.org/uniprotkb/P0DTD3)) are missing from our [SARS-CoV-2 page](https://swissmodel.expasy.org/repository/species/2697049) but can safely be used to map annotations and we will provide structures if possible.
 
 Also we are actively working on extending the structural coverage of the SARS-CoV-2 proteome by using protein predictions from colleagues participating in CASP.
 
