@@ -54,6 +54,7 @@ The annotation format is a plain-text format:
   - ViralZone has a well described overview of the proteome [here](https://viralzone.expasy.org/8996).
   - We propose to ignore the shorter polyprotein (P0DTC1, R1A_SARS2) as it's cleaved into the same mature proteins as the longer one (P0DTD1, R1AB_SARS2) with the exception of a very short peptide (Non-structural protein 11 (nsp11), [YP_009725312.1](https://www.ncbi.nlm.nih.gov/protein/YP_009725312.1)).
   - Two proteins of unknown function ([P0DTD2](https://covid-19.uniprot.org/uniprotkb/P0DTD2) and [P0DTD3](https://covid-19.uniprot.org/uniprotkb/P0DTD3)) are missing from our [SARS-CoV-2 page](https://swissmodel.expasy.org/repository/species/2697049) but can safely be used to map annotations and we will provide structures if possible.
+  - Additionally to the SARS-CoV-2 proteins, it also makes sense to map annotations for [Q9BYF1](https://covid-19.uniprot.org/uniprotkb/Q9BYF1) (ACE2_HUMAN). So far this is the only virus-host-interaction for which we have structural information. More interactions have been proposed (e.g. [here](https://viralzone.expasy.org/9077)) but we don't have structures for them (yet).
 
 Also we are actively working on extending the structural coverage of the SARS-CoV-2 proteome by using protein predictions from colleagues participating in CASP.
 
