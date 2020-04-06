@@ -91,7 +91,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/xrobin"><img src="https://avatars2.githubusercontent.com/u/1047170?v=4" width="100px;" alt=""/><br /><sub><b>Xavier Robin</b></sub></a><br /><a href="#tool-xrobin" title="Tools">🔧</a> <a href="https://github.com/SWISS-MODEL/covid-19-Annotations-on-Structures/commits?author=xrobin" title="Documentation">📖</a></td>
     <td align="center"><a href="https://github.com/bienchen"><img src="https://avatars0.githubusercontent.com/u/69343?v=4" width="100px;" alt=""/><br /><sub><b>bienchen</b></sub></a><br /><a href="#tool-bienchen" title="Tools">🔧</a></td>
     <td align="center"><a href="https://github.com/awaterho"><img src="https://avatars2.githubusercontent.com/u/40768716?v=4" width="100px;" alt=""/><br /><sub><b>Andrew W</b></sub></a><br /><a href="#tool-awaterho" title="Tools">🔧</a> <a href="#design-awaterho" title="Design">🎨</a></td>
-    <td align="center"><a href="https://github.com/schdaude"><img src="https://avatars3.githubusercontent.com/u/4851123?v=4" width="100px;" alt=""/><br /><sub><b>schdaude</b></sub></a><br /><a href="#tool-schdaude" title="Tools">🔧</a></td>
+    <td align="center"><a href="https://github.com/schdaude"><img src="https://avatars3.githubusercontent.com/u/4851123?v=4" width="100px;" alt=""/><br /><sub><b>schdaude</b></sub></a><br /><a href="#tool-schdaude" title="Tools">🔧</a> <a href="https://github.com/SWISS-MODEL/covid-19-Annotations-on-Structures/commits?author=schdaude" title="Code">💻</a></td>
   </tr>
 </table>
 
