@@ -19,7 +19,7 @@ Additional topics of interest:
 ## Preferred technologies
 
 - Programming languages used within SWISS-MODEL: Python (3.6), C++
-- Dealing with protein structure and sequence data: [OpenStructure](https://openstructure.org/)
+- Dealing with protein structure and sequence data: [OpenStructure](https://openstructure.org/) (example in [wiki here](https://github.com/SWISS-MODEL/covid-19-Annotations-on-Structures/wiki/Annotation-example-with-the-OpenStructure-Computational-Structural-Biology-Framework))
 
 ## Guidelines for contributions
 
