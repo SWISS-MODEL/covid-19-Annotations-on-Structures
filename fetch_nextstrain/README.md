@@ -6,7 +6,7 @@ I include all the variation data (amino acid and nucleotide) and all the metadat
 
 TODO:
 
-- Give format to the output.
+- Give format to the output (done).
 - Select the fields of interest.
-- Replace protein names with UniProtKB AC
+- Replace protein names with UniProtKB AC (done).
 
