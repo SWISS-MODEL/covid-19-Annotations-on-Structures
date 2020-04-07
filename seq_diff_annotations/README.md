@@ -29,3 +29,12 @@ annotation = seq_diff_annotations.get_annotation(scov_2_poly_ac, scov_poly_ac)
 
 print("url with annotations:", annotation.post())
 ```
+
+The code pushes the annotations using a post request and produces 
+the following example ouput:
+```
+url with annotations: https://beta.swissmodel.expasy.org/repository/covid_annotation_project/4QxbPW
+```
+The URL should remain valid for a while, so feel free to directly inspect the
+results.
+
