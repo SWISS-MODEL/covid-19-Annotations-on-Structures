@@ -3,6 +3,7 @@ import re
 import requests
 from . import uniprot
 
+
 class Annotation:
     """
     Helper class to programmatically define annotations and format according
@@ -31,7 +32,8 @@ class Annotation:
     print(annotation)
 
     # or directly do a post request (defaults to SWISS-MODEL beta)
-    print("visit", annotation.post(), "to see awesome things")
+    print("Visit the following url to see awesome things:")
+    print(annotation.post(title="awesome things"))
     """
 
     def __init__(self):
@@ -100,6 +102,8 @@ class Annotation:
     def post(
         self,
         url="https://beta.swissmodel.expasy.org/repository/covid_annotation_upload",
+        title=None,
+        email=None,
     ):
         """
         Performs post request and returns the url at which the annotations can
@@ -109,8 +113,14 @@ class Annotation:
 
         :param url:     URL of annotation upload form, defaults to SWISS-MODEL
                         beta.
+        :param title:   Filled in project title field if given
+        :param email:   Filled in email field if given
         """
         data = {"annotation_data": self.__str__()}
+        if title:
+            data["title"] = title
+        if email:
+            data["email"] = email
         res = requests.post(url, data=data)
         return res.url
 

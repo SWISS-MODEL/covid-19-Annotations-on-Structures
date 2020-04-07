@@ -66,10 +66,11 @@ The annotation format is a plain-text format:
   print(annotation)
 
   # Or directly do a post request (defaults to SWISS-MODEL beta)
-  print("visit", annotation.post(), "to see awesome things")
+  print("Visit the following url to see awesome things:")
+  print(annotation.post(title="awesome things"))
   ```
   The last line directly creates a new annotation project and prints its url. 
-  An example can be viewed [here](https://beta.swissmodel.expasy.org/repository/covid_annotation_project/dUHPPN)
+  An example can be viewed [here](https://beta.swissmodel.expasy.org/repository/covid_annotation_project/SBEjAm)
 
 - UniProtKB ACs with links can be found in [UniProtKB](https://covid-19.uniprot.org/)
   - Our [SARS-CoV-2 page](https://swissmodel.expasy.org/repository/species/2697049) shows mapping to mature proteins and the correspondence to RefSeq and GenBank.
