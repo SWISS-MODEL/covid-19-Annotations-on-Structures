@@ -99,6 +99,15 @@
         "content",
         "code"
       ]
+    },
+    {
+      "login": "D-Barradas",
+      "name": "Didier Barradas Bautista",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/17081199?v=4",
+      "profile": "http://www.linkedin.com/in/didier-barradas-bautista",
+      "contributions": [
+        "content"
+      ]
     }
   ],
   "contributorsPerLine": 7,
