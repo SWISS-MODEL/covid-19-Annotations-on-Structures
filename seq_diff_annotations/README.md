@@ -21,10 +21,11 @@ I'm confident that Windows users will also figure it out...
 ```
 import seq_diff_annotations
 
-scov_2_spike_ac = 'P0DTC2' 
-scov_spike_ac = 'P59594'
+scov_2_poly_ac = 'P0DTD1'
+scov_poly_ac = 'P0C6X7'
 
-annotation = seq_diff_annotations.get_annotation(scov_2_spike_ac, scov_spike_ac)
+# due to the inefficient alignment implementation, this may take a while
+annotation = seq_diff_annotations.get_annotation(scov_2_poly_ac, scov_poly_ac)
 
 print("url with annotations:", annotation.post())
 ```
