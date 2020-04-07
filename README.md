@@ -47,6 +47,30 @@ The annotation format is a plain-text format:
   P0DTD1	3400	3450	#FF00FF	https://swissmodel.expasy.org/repository/	My Awesome Annotation
   P0DTC2	230	330	#FFA500	A text reference	One more!
   ```
+- The Annotation class available in utils facilitates creation of new annotations:
+  ```python
+  from utils.sm_annotations import Annotation
+
+  # generate example annotations
+  annotation = Annotation()
+
+  # Annotation of residue range with color red provided as RGB
+  annotation.add("P0DTD1", (10, 20), (1.0, 0.0, 0.0), "red anno")
+
+  # Again, annotating a range but this time we're adding a reference
+  # and provide the color blue as hex
+  annotation.add("P0DTD1", (21, 30), "#0000FF", "blue anno", 
+                 reference = "https://swissmodel.expasy.org/")
+
+  # Outputs plain text which is accepted on the covid annotation upload 
+  print(annotation)
+
+  # Or directly do a post request (defaults to SWISS-MODEL beta)
+  print("visit", annotation.post(), "to see awesome things")
+  ```
+  The last line directly creates a new annotation project and prints its url. 
+  An example can be viewed [here](https://beta.swissmodel.expasy.org/repository/covid_annotation_project/dUHPPN)
+
 - UniProtKB ACs with links can be found in [UniProtKB](https://covid-19.uniprot.org/)
   - Our [SARS-CoV-2 page](https://swissmodel.expasy.org/repository/species/2697049) shows mapping to mature proteins and the correspondence to RefSeq and GenBank.
   - We also have a [list of all SARS-CoV-2 proteins](https://beta.swissmodel.expasy.org/repository/species/2697049/list) that shows an overview of the ACs and their structural coverage.
