@@ -108,6 +108,16 @@
       "contributions": [
         "content"
       ]
+    },
+    {
+      "login": "bmeldal",
+      "name": "Birgit Meldal",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/10517124?v=4",
+      "profile": "https://github.com/bmeldal",
+      "contributions": [
+        "ideas",
+        "content"
+      ]
     }
   ],
   "contributorsPerLine": 7,
