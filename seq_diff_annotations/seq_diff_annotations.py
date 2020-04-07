@@ -1,16 +1,6 @@
 from utils.sm_annotations import Annotation
 from utils import uniprot
-
-
-def _align(s_one, s_two):
-    # for a hacky first implementation we rely on the OpenStructure package
-    # would be cool to avoid that dependency for this simple example annotation
-    from ost import seq
-
-    ost_s_one = seq.CreateSequence("one", s_one)
-    ost_s_two = seq.CreateSequence("two", s_two)
-    aln = seq.alg.GlobalAlign(ost_s_one, ost_s_two, seq.alg.BLOSUM62)[0]
-    return (str(aln.GetSequence(0)), str(aln.GetSequence(1)))
+from needleman_wunsch import Align
 
 
 def get_annotation(uniprot_ac_target, uniprot_ac_reference, nonconserved_color="r"):
@@ -27,7 +17,7 @@ def get_annotation(uniprot_ac_target, uniprot_ac_reference, nonconserved_color="
     """
     s_target = uniprot.seq_from_ac(uniprot_ac_target)
     s_reference = uniprot.seq_from_ac(uniprot_ac_reference)
-    aligned_s_target, aligned_s_reference = _align(s_target, s_reference)
+    aligned_s_target, aligned_s_reference = Align(s_target, s_reference)
 
     # this is a sanity check if the align function did not alter the underlying
     # sequenes
