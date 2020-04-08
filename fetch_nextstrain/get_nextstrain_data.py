@@ -45,18 +45,25 @@ def give_format_output(data):
     identifiers = {'ORF1b': 'P0DTD1', 'ORF1a': 'P0DTD1', 'S': 'P0DTC2', 'ORF3a': 'P0DTC3', 'E': 'P0DTC4', 'M': 'P0DTC5', 'ORF6': 'P0DTC6', 'ORF7a': 'P0DTC7', 'ORF7b': 'P0DTD8', 'ORF8': 'P0DTC8', 'N': 'P0DTC9', 'ORF14': 'P0DTD3', 'ORF9b': 'P0DTD2', 'ORF10': 'A0A663DJA2'}
 
     with open('nextstrain_data.csv', 'w') as fh:
-        headers = f'Protein,Mutation,Isolate,Author,GISAID\n'
+        headers = f'Protein,ORF,Mutation,Isolate,Author,GISAID\n'
         fh.write(headers)
         for record in data:
             if record[1][0][0] in identifiers:
                 protein = identifiers[record[1][0][0]]
             else:
                 protein = record[1][0][0]
-            mutation = record[1][0][1][0]
+            orf = record[1][0][0]
+            if orf == 'ORF1b':
+                original = record[1][0][1][0][0]
+                mutant = record[1][0][1][0][-1]
+                position = int(record[1][0][1][0][1:-1]) + 4401
+                mutation = original + str(position) + mutant
+            else:
+                mutation = record[1][0][1][0]
             author = record[2]['value']
             isolate = record[0]
             gisaid = record[3]['value']
-            output = f'{protein},{mutation},{isolate},{author},{gisaid}\n'
+            output = f'{protein},{orf},{mutation},{isolate},{author},{gisaid}\n'
             fh.write(output)
 
 def main():
