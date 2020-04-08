@@ -127,6 +127,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "akdel",
+      "name": "mehmet",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/9914131?v=4",
+      "profile": "https://github.com/akdel",
+      "contributions": [
+        "content"
+      ]
     }
   ],
   "contributorsPerLine": 7,
