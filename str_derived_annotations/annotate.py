@@ -16,10 +16,10 @@
 import typing
 from dataclasses import dataclass
 
-import matplotlib as mpl
 import numpy as np
 import prody as pd
 from matplotlib import cm
+from matplotlib import colors as mpl_colors
 
 from utils.sm_annotations import Annotation
 
@@ -119,13 +119,43 @@ def get_perturbations(enm, n_modes=6):
 
 
 def get_stiffness(enm, calphas, n_modes=6):
+    """
+    Calculate mechanical stiffness based on an elastic network model
+    Parameters
+    ----------
+    enm
+    calphas
+        alpha carbon selection from the structure
+    n_modes
+        number of modes to consider
+
+    Returns
+    -------
+    a value of stiffness per residue
+    """
     return np.mean(pd.calcMechStiff(enm[:n_modes], calphas), axis=0)
 
 
 def numbers_to_colors(numbers, cmap="jet", log=False):
+    """
+    Converts a list of real-valued numbers to colors according to a colormap
+    used for plotting on a structure in SWISS-MODEL
+    Parameters
+    ----------
+    numbers
+    cmap
+        matplotlib colormap
+    log
+        if True, does natural log transformation on the numbers first
+        (might be better if the distribution is too skewed)
+
+    Returns
+    -------
+
+    """
     if log:
         numbers = np.log1p(numbers)
-    norm = mpl.colors.Normalize(vmin=np.min(numbers), vmax=np.max(numbers))
+    norm = mpl_colors.Normalize(vmin=np.min(numbers), vmax=np.max(numbers))
     colormap = cm.get_cmap(cmap)
     return [colormap(norm(n))[:3] for n in numbers]
 
