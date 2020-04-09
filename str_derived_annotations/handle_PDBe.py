@@ -7,6 +7,8 @@ class UniprotBasedMapping:
     def __init__(self, uniprot_id: str):
         self.PDBe_api_request_url = f"https://www.ebi.ac.uk/pdbe/api/mappings/best_structures/{uniprot_id}"
         self.uniprot_api_request_url = f"https://www.ebi.ac.uk/uniprot/api/covid-19/uniprotkb/accession/{uniprot_id}.gff"
+        self.uniprot_sequence_request_url = f"https://www.ebi.ac.uk/uniprot/api/covid-19/uniprotkb/accession/{uniprot_id}.fasta"
+        self.uniprot_sequence = "".join([x for x in rq.get(self.uniprot_sequence_request_url).text.split("\n") if not x.startswith(">")])
         self.protein_annotation_intervals = dict()
         self._get_intervals_from_uniprot()
         self.data = {x["pdb_id"]: x for x in rq.get(self.PDBe_api_request_url).json()[uniprot_id]}
@@ -39,11 +41,14 @@ class UniprotBasedMapping:
         except KeyError:
             raise KeyError(f"no such protein name found. here are the available ones: \
             {', '.join(list(self.protein_annotation_intervals.keys()))}")
-        return [x.data for x in self.tree.overlap(start, end)]
+        return [self.data[x.data] for x in self.tree.overlap(start, end)]
 
 
 if __name__ == "__main__":
     mapping = UniprotBasedMapping("P0DTC2")
     mapping.list_available_annotations()
+    print(mapping.uniprot_sequence)
+    print(len(mapping.uniprot_sequence))
     print(mapping.search_pdbs_by_protein_name("Spike protein S1"))
     # mapping.protein_annotation_intervals["3C-like proteinase"]
+    # print(mapping.data["6vxx"])
