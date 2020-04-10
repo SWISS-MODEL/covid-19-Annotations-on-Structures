@@ -1,4 +1,3 @@
-import subprocess
 import typing
 from pathlib import Path
 
@@ -52,11 +51,6 @@ def get_sequences_from_fasta(fasta_file: typing.Union[str, Path]) -> dict:
     return {key: sequence for (key, sequence) in get_sequences_from_fasta_yield(fasta_file)}
 
 
-def run_muscle(in_file, out_file):
-    command = ['muscle', '-in', in_file, '-out', out_file]
-    subprocess.check_call(command)
-
-
 class UniProtBasedMapping:
     def __init__(self, uniprot_id: str):
         self.uniprot_id = uniprot_id
@@ -105,31 +99,17 @@ class UniProtBasedMapping:
                            f"Are you sure this is a COVID-19 protein present in {self.uniprot_id}? "
                            f"Available IDs are {self.data.keys()}")
 
-    def map_to_pdb(self, info_dict, aln_dir="./tmp"):
+    def map_to_pdb(self, info_dict):
         pdb_id, chain_id = info_dict["pdb_id"], info_dict["chain_id"]
-        pdb = pd.parseCIF(pdb_id, chain=chain_id).select(f"resnum {info_dict['start']}:{info_dict['end']}")
-        pdb_alpha = pdb.select("calpha")
-        pdb_sequence = pdb_alpha.getSequence()
+        pdb_alpha = pd.parseCIF(pdb_id, chain=chain_id).select(f"resnum {info_dict['start']} to {info_dict['end']}").select("calpha")
+        pdb_sequence_dict = dict(zip(pdb_alpha.getResnums(), pdb_alpha.getSequence()))
         ref_sequence = self.uniprot_sequence[info_dict["unp_start"] - 1: info_dict["unp_end"]]
-        aln_dir = Path(aln_dir)
-        if not aln_dir.exists():
-            aln_dir.mkdir()
-        sequence_file = aln_dir / f"{pdb_id}_{chain_id}.fasta"
-        with open(sequence_file, "w") as f:
-            f.write(f">{pdb_id}\n{pdb_sequence}\n")
-            f.write(f">{self.uniprot_id}\n{ref_sequence}\n")
-        aln_file = aln_dir / f"{pdb_id}_{chain_id}_aln.fasta"
-        run_muscle(sequence_file, aln_file)
-        aln_sequences = get_sequences_from_fasta(aln_file)
-        index_1 = info_dict["start"]
-        index_2 = info_dict["unp_start"]
         residue_mapping = {}
-        for i in range(len(aln_sequences[pdb_id])):
-            if aln_sequences[pdb_id][i] != "-":
-                residue_mapping[index_1] = index_2
-                index_1 += 1
-            if aln_sequences[self.uniprot_id] != "-":
-                index_2 += 1
+        for i in range(len(ref_sequence)):
+            index_1 = i + info_dict["start"]
+            if index_1 in pdb_sequence_dict:
+                assert pdb_sequence_dict[index_1] == ref_sequence[i]
+                residue_mapping[index_1] = i + info_dict["unp_start"]
         return residue_mapping
 
 
@@ -141,3 +121,4 @@ if __name__ == "__main__":
     print(mapping.search_pdbs_by_protein_name("Spike protein S1"))
     # mapping.protein_annotation_intervals["3C-like proteinase"]
     # print(mapping.data["6vxx"])
+    # print(mapping.search_pdb_by_id("6lu7"))
