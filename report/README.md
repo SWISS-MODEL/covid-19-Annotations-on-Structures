@@ -10,7 +10,7 @@ Expected content for mini-publication (taken from mailinglist):
 3. Results of work during BioHackathon
 4. Future work 
 
-Build paper using docker container (see Docker build instructions [here](https://github.com/biohackrxiv/bhxiv-gen-pdf))
+Build paper using docker container (see Docker build instructions [here](https://github.com/biohackrxiv/bhxiv-gen-pdf#run-via-docker)):
     
     cd $GIT_ROOT
     docker run --rm -it -v $(pwd):/work -w /work biohackrxiv/gen-pdf:local gen-pdf /work/report
