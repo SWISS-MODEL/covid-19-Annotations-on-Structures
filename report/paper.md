@@ -1,5 +1,5 @@
 ---
-title: 'BioHackrXiv  template'
+title: 'Mapping sequence data onto protein structures of SARS-CoV-2'
 tags:
   - Covid-19
   - Protein structures
