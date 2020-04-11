@@ -1,17 +1,16 @@
-## Contents of [covid-19-Annotations-on-Structures/DARK](https://github.com/gtauriello/covid-19-Annotations-on-Structures/tree/master/DARK)
+## Contents of this folder
 
-
-### [coronavirus.fasta.CAST_thr20_4hackathon.tab](https://github.com/gtauriello/covid-19-Annotations-on-Structures/tree/master/DARK/coronavirus.fasta.CAST_thr20_4hackathon.tab)
+### [coronavirus.fasta.CAST_thr20_4hackathon.tab](./coronavirus.fasta.CAST_thr20_4hackathon.tab)
 Compositionally biased regions detected by the CAST algorithm (Promponas et al., 2000). 
-CAST v2.2 (Ioannides et al., in preparation) tab-separated output, reformatted to be inline with the Swiss-Model annotation format. 
+CAST v2.2 (Ioannides et al., in preparation) tab-separated output, reformatted to be in line with the Swiss-Model annotation format. 
 Regions are colored according to amino acid type, following the Rasmol color scheme as described in 
 http://life.nthu.edu.tw/~fmhsu/rasframe/SHAPELY.HTM.
 
-### [casttab2swmodel.pl](https://github.com/gtauriello/covid-19-Annotations-on-Structures/tree/master/DARK/casttab2swmodel.pl)
+### [casttab2swmodel.pl](./casttab2swmodel.pl)
 Perl code to reformat CAST output for input to Swiss-Model portal. Tested with perl v5.16.2 on MacOS, should work fine on Linux/Windows as well. No external dependencies.
 
 On the command line simply run:
 $perl casttab2swmodel.pl path/to/cast_tab_file > path/to/hackathon.tab
 
-### [coronavirus.fasta.CASTV2.2.thr20] (https://github.com/gtauriello/covid-19-Annotations-on-Structures/tree/master/DARK/casttab2swmodel.pl)
-Raw tab output from CAST v2.2.
+### [coronavirus.fasta.CASTV2.2.thr20](./coronavirus.fasta.CASTV2.2.thr20)
+Raw tab output from CAST v2.2 to be used for Perl script above.
