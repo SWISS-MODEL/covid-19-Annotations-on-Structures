@@ -16,11 +16,14 @@ authors:
   - name: Andrew Waterhouse
     affiliation: 1
   - name: Gabriel Studer
-    affiliation: 1
+    affiliation: 1  
+  - name: Laura Blum
+    affiliation: 2
+    
 affiliations:
  - name: SIB Swiss Institute of Bioinformatics & Biozentrum, University of Basel, Klingelbergstrasse 50–70, CH-4056 Basel, Switzerland
    index: 1
- - name: Institution 1, address, city, country
+ - name: Middlebury College, Middlebury, VT, 05753, United States of America
    index: 2
 date: 11 April 2020
 bibliography: paper.bib
