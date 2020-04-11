@@ -4,6 +4,10 @@ Report aimed to be published in BioHackrXiv:
 - [Moderation process](https://github.com/biohackrxiv/biohackrxiv.github.io/blob/guidelines/moderation_process.md)
 - [Paper template](https://github.com/biohackrxiv/submission-templates/blob/master/paper.md)
 
+Important for everone's contributions:
+- Name and affiliation to be filled in the [markdown report](./paper.md)
+- If you provide text for an annotation effort, please make sure to properly give attribution to the data sources used
+
 Expected content for mini-publication (taken from mailinglist):
 1. Description of problem
 2. Description of state-of-the-art
