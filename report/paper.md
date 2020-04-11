@@ -57,7 +57,9 @@ remote homology, the polymerase architecture is largely conserved and thus
 allows for structural superpositions.
 
 ![Differences to SARS-CoV (red) vs predicted ATP binding site (blue) on RNA polymerase \label{RdRp_combined}](./RdRp-combined.png)
- 
+
+We generated annotations based on the most recent literature on the SARS-CoV-2 spike protein (P0DTC2) receptor binding domain (RBD). This included putative adaptive mutations from SARS-CoV to SARS-CoV-2 and highly conserved contact residues in the RBD [@Wan2020,@Tai2020]. Residues related to ACE2 binding [@Shang2020] and CR3022 antibody interactions were also highlighted [@Yuan2020]. Mapping annotations extracted from recent literature onto the same protein structure can allow for comparison and synthesis of information across research groups and the formation of new hypotheses. These annotations can also be used to add detail to those extracted from variations within sequence data.
+
 # Conclusion
 
 TODO:
