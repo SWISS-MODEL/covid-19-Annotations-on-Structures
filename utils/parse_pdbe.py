@@ -10,74 +10,12 @@ from utils.uniprot import seq_from_ac
 MAPPING_FILE = "uniprot_segments_observed.tsv"
 
 
-def get_sequences_from_fasta_yield(fasta_file: typing.Union[str, Path]) -> tuple:
-    """
-    Returns (accession, sequence) iterator
-    Parameters
-    ----------
-    fasta_file
-    Returns
-    -------
-    (accession, sequence)
-    """
-    with open(fasta_file) as f:
-        current_sequence = ""
-        current_key = None
-        for line in f:
-            if not len(line.strip()):
-                continue
-            if "==" in line:
-                continue
-            if ">" in line:
-                if current_key is None:
-                    current_key = line.split(">")[1].strip()
-                else:
-                    yield (current_key, current_sequence)
-                    current_sequence = ""
-                    current_key = line.split(">")[1].strip()
-            else:
-                current_sequence += line.strip()
-        yield (current_key, current_sequence)
-
-
-def get_sequences_from_fasta(fasta_file: typing.Union[str, Path]) -> dict:
-    """
-    Returns dict of accession to sequence from fasta file
-    Parameters
-    ----------
-    fasta_file
-    Returns
-    -------
-    {accession:sequence}
-    """
-    return {key: sequence for (key, sequence) in get_sequences_from_fasta_yield(fasta_file)}
-
-
-def parse_pdbe_mapping_file() -> dict:
-    """
-    A summary of the UniProt to PDBe residue level mapping (observed residues only),
-    showing the start and end residues of the mapping using SEQRES, PDB sequence and UniProt numbering.
-
-    Returns
-    -------
-    dict of (pdb_id, chain_id): dict of (SP_PRIMARY, RES_BEG, RES_END, PDB_BEG, PDB_END, SP_BEG, SP_END)
-    """
-
-    column_names = None
-    residue_mapping = {}
-    with open(MAPPING_FILE) as f:
-        for i, line in enumerate(f):
-            if i == 0:
-                continue
-            elif i == 1:
-                column_names = line.strip().split("\t")
-            else:
-                parts = line.strip().split("\t")
-                residue_mapping[(parts[0], parts[1])] = dict(zip(column_names[2:], parts[2:]))
-    return residue_mapping
-
-
 class UniProtBasedMapping:
+    """
+    Helper class to map PDB residue numbers to their corresponding UniProt reference sequence indices.
+    See main and str_derived_annotations for example usage
+    """
+
     def __init__(self, uniprot_id: str):
         self.uniprot_id = uniprot_id
         self.all_residue_mapping = parse_pdbe_mapping_file()
@@ -143,6 +81,73 @@ class UniProtBasedMapping:
                     mismatches.append((index_1, pdb_sequence_dict[index_1], ref_sequence[i]))
                 residue_mapping[index_1] = i + unp_start
         return residue_mapping, mismatches
+
+
+def get_sequences_from_fasta_yield(fasta_file: typing.Union[str, Path]) -> tuple:
+    """
+    Returns (accession, sequence) iterator
+    Parameters
+    ----------
+    fasta_file
+    Returns
+    -------
+    (accession, sequence)
+    """
+    with open(fasta_file) as f:
+        current_sequence = ""
+        current_key = None
+        for line in f:
+            if not len(line.strip()):
+                continue
+            if "==" in line:
+                continue
+            if ">" in line:
+                if current_key is None:
+                    current_key = line.split(">")[1].strip()
+                else:
+                    yield (current_key, current_sequence)
+                    current_sequence = ""
+                    current_key = line.split(">")[1].strip()
+            else:
+                current_sequence += line.strip()
+        yield (current_key, current_sequence)
+
+
+def get_sequences_from_fasta(fasta_file: typing.Union[str, Path]) -> dict:
+    """
+    Returns dict of accession to sequence from fasta file
+    Parameters
+    ----------
+    fasta_file
+    Returns
+    -------
+    {accession:sequence}
+    """
+    return {key: sequence for (key, sequence) in get_sequences_from_fasta_yield(fasta_file)}
+
+
+def parse_pdbe_mapping_file() -> dict:
+    """
+    A summary of the UniProt to PDBe residue level mapping (observed residues only),
+    showing the start and end residues of the mapping using SEQRES, PDB sequence and UniProt numbering.
+
+    Returns
+    -------
+    dict of (pdb_id, chain_id): dict of (SP_PRIMARY, RES_BEG, RES_END, PDB_BEG, PDB_END, SP_BEG, SP_END)
+    """
+
+    column_names = None
+    residue_mapping = {}
+    with open(MAPPING_FILE) as f:
+        for i, line in enumerate(f):
+            if i == 0:
+                continue
+            elif i == 1:
+                column_names = line.strip().split("\t")
+            else:
+                parts = line.strip().split("\t")
+                residue_mapping[(parts[0], parts[1])] = dict(zip(column_names[2:], parts[2:]))
+    return residue_mapping
 
 
 if __name__ == "__main__":

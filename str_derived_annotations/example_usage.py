@@ -1,6 +1,7 @@
 from pathlib import Path
 
-from str_derived_annotations import annotate, parse_pdbe
+from str_derived_annotations import annotate
+from utils import parse_pdbe
 
 
 def example_ensemble():
