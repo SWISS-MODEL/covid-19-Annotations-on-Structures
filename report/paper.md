@@ -77,10 +77,4 @@ This work was done within the [Covid-19 Virtual BioHackathon 2020](https://githu
 We thank the organizers for the opportunity and the support.
 
 # References
-Shang, J. et al. (2020). Structural basis of receptor recognition by SARS-CoV-2. Nature, 1–8. doi:10.1038/s41586-020-2179-y.
 
-Tai, W. et al. (2020). Characterization of the receptor-binding domain ( RBD ) of 2019 novel coronavirus : implication for development of RBD protein as a viral attachment inhibitor and vaccine. Cell. Mol. Immunol. doi:10.1038/s41423-020-0400-4.
-
-Wan, Y. et al. (2020). Receptor Recognition by the Novel Coronavirus from Wuhan: an Analysis Based on Decade-Long Structural Studies of SARS Coronavirus. J. Virol. 94, 1–9. doi:10.1128/jvi.00127-20.
-
-Yuan, M. et al. (2020). A highly conserved cryptic epitope in the receptor-binding domains of SARS-CoV-2 and SARS-CoV. Science, 7269, 1–10.
