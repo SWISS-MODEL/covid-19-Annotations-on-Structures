@@ -165,8 +165,10 @@ class EnsembleAnnotation:
     pdb_id: str
     chain: str
     protein: pd.AtomGroup
+
     uniprot_id: str
     residue_mapper: dict
+
     rmsds_to_reference: typing.List[float]
     rmsds_per_residue: np.ndarray
     pca_fluctuations: np.ndarray
@@ -175,15 +177,21 @@ class EnsembleAnnotation:
     def get_output_mapping(self):
         mapping = dict()
         msa = self.ensemble.getMSA().getArray()[0]
+        calphas = self.protein.select("calpha")
         reference_aln_indices = [i for i, r in enumerate(msa) if r != "-"]
-        reference_indices = [i for i in range(len(self.protein.select("calpha"))) if i in self.residue_mapper]
-        mapped_residues = [self.residue_mapper[r] for r in reference_indices]
-        mapping["Ensemble IDs"] = [(f"{mapped_residues[0]}-{mapped_residues[-1]}",
+        indices = []
+        resnums = []
+        for i, a in enumerate(calphas):
+            if a.getResnum() in self.residue_mapper:
+                indices.append(i)
+                resnums.append(a.getResnum())
+        uniprot_residues = [self.residue_mapper[r] for r in resnums]
+        mapping["Ensemble IDs"] = [(f"{uniprot_residues[0]}-{uniprot_residues[-1]}",
                                     self.ensemble.getLabels(), (0, 0, 0))]
-        mapping["Average RMSD"] = zip(mapped_residues,
+        mapping["Average RMSD"] = zip(uniprot_residues,
                                       np.round(self.rmsds_per_residue[reference_aln_indices], 2),
                                       numbers_to_colors(self.rmsds_per_residue[reference_aln_indices]))
-        mapping["PCA fluctuations"] = zip(mapped_residues,
+        mapping["PCA fluctuations"] = zip(uniprot_residues,
                                           np.round(self.pca_fluctuations[reference_aln_indices], 2),
                                           numbers_to_colors(self.pca_fluctuations[reference_aln_indices]))
 
@@ -195,8 +203,11 @@ class StructureAnnotation:
     pdb_id: str
     chain: str
     protein: pd.AtomGroup
+    calphas: pd.AtomGroup
+
     uniprot_id: str
     residue_mapper: dict
+
     enm_fluctuations: np.ndarray
     perturbation_effectiveness: np.ndarray
     perturbation_sensitivity: np.ndarray
@@ -207,20 +218,25 @@ class StructureAnnotation:
 
     def get_output_mapping(self):
         mapping = dict()
-        indices = [i for i in range(len(self.enm_fluctuations)) if i in self.residue_mapper]
-        residues = [self.residue_mapper[i] for i in indices]
-        mapping["ENM fluctuations"] = zip(residues, np.round(self.enm_fluctuations[indices], 2),
+        indices = []
+        resnums = []
+        for i, a in enumerate(self.calphas):
+            if a.getResnum() in self.residue_mapper:
+                indices.append(i)
+                resnums.append(a.getResnum())
+        uniprot_residues = [self.residue_mapper[i] for i in resnums]
+        mapping["ENM fluctuations"] = zip(uniprot_residues, np.round(self.enm_fluctuations[indices], 2),
                                           numbers_to_colors(self.enm_fluctuations[indices]))
-        mapping["Perturbation Effectiveness"] = zip(residues, np.round(self.perturbation_effectiveness[indices], 2),
+        mapping["Perturbation Effectiveness"] = zip(uniprot_residues, np.round(self.perturbation_effectiveness[indices], 2),
                                                     numbers_to_colors(self.perturbation_effectiveness[indices]))
-        mapping["Perturbation Sensitivity"] = zip(residues, np.round(self.perturbation_sensitivity[indices], 2),
+        mapping["Perturbation Sensitivity"] = zip(uniprot_residues, np.round(self.perturbation_sensitivity[indices], 2),
                                                   numbers_to_colors(self.perturbation_sensitivity[indices]))
-        mapping["Mechanical Stiffness"] = zip(residues, np.round(self.mechanical_stiffness[indices], 2),
+        mapping["Mechanical Stiffness"] = zip(uniprot_residues, np.round(self.mechanical_stiffness[indices], 2),
                                               numbers_to_colors(self.mechanical_stiffness[indices]))
         for i in range(len(self.hinge_sites)):
-            mapping[f"Hinge sites for mode {i}"] = [(self.residue_mapper[r],
+            mapping[f"Hinge sites for mode {i}"] = [(self.residue_mapper[self.calphas[r].getResnum()],
                                                      f"mode {i}",
-                                                     (0, 0, 0)) for r in self.hinge_sites[i] if r in self.residue_mapper]
+                                                     (0, 0, 0)) for r in self.hinge_sites[i] if self.calphas[r].getResnum() in self.residue_mapper]
         return mapping
 
 
@@ -241,7 +257,7 @@ def get_annotations_single(uniprot_id, pdb_id, chain, residue_mapper: dict, n_mo
     anm, _ = pd.calcANM(structure, n_modes=n_modes)
     effectiveness, sensitivity = get_perturbations(anm, n_modes)
     hinge_sites = [get_hinge_indices(gnm, mode=n) for n in range(n_modes)]
-    return StructureAnnotation(pdb_id, chain, structure,
+    return StructureAnnotation(pdb_id, chain, structure, calphas,
                                uniprot_id, residue_mapper,
                                get_enm_fluctuations(anm, n_modes), effectiveness, sensitivity, get_stiffness(anm, calphas, n_modes),
                                hinge_sites, anm, gnm)

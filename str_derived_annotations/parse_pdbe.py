@@ -7,6 +7,8 @@ import requests as rq
 
 from utils.uniprot import seq_from_ac
 
+MAPPING_FILE = "uniprot_segments_observed.tsv"
+
 
 def get_sequences_from_fasta_yield(fasta_file: typing.Union[str, Path]) -> tuple:
     """
@@ -51,9 +53,34 @@ def get_sequences_from_fasta(fasta_file: typing.Union[str, Path]) -> dict:
     return {key: sequence for (key, sequence) in get_sequences_from_fasta_yield(fasta_file)}
 
 
+def parse_pdbe_mapping_file() -> dict:
+    """
+    A summary of the UniProt to PDBe residue level mapping (observed residues only),
+    showing the start and end residues of the mapping using SEQRES, PDB sequence and UniProt numbering.
+
+    Returns
+    -------
+    dict of (pdb_id, chain_id): dict of (SP_PRIMARY, RES_BEG, RES_END, PDB_BEG, PDB_END, SP_BEG, SP_END)
+    """
+
+    column_names = None
+    residue_mapping = {}
+    with open(MAPPING_FILE) as f:
+        for i, line in enumerate(f):
+            if i == 0:
+                continue
+            elif i == 1:
+                column_names = line.strip().split("\t")
+            else:
+                parts = line.strip().split("\t")
+                residue_mapping[(parts[0], parts[1])] = dict(zip(column_names[2:], parts[2:]))
+    return residue_mapping
+
+
 class UniProtBasedMapping:
     def __init__(self, uniprot_id: str):
         self.uniprot_id = uniprot_id
+        self.all_residue_mapping = parse_pdbe_mapping_file()
         self.PDBe_api_request_url = f"https://www.ebi.ac.uk/pdbe/api/mappings/best_structures/{uniprot_id}"
         self.uniprot_api_request_url = f"https://www.ebi.ac.uk/uniprot/api/covid-19/uniprotkb/accession/{uniprot_id}.gff"
         self.uniprot_sequence = seq_from_ac(uniprot_id)
@@ -101,16 +128,21 @@ class UniProtBasedMapping:
 
     def map_to_pdb(self, info_dict):
         pdb_id, chain_id = info_dict["pdb_id"], info_dict["chain_id"]
-        pdb_alpha = pd.parseCIF(pdb_id, chain=chain_id).select(f"resnum {info_dict['start']} to {info_dict['end']}").select("calpha")
+        pdbe_mapping = self.all_residue_mapping[(pdb_id, chain_id)]
+        start, end = int(pdbe_mapping['PDB_BEG']), int(pdbe_mapping['PDB_END'])
+        unp_start, unp_end = int(pdbe_mapping["SP_BEG"]), int(pdbe_mapping["SP_END"])
+        pdb_alpha = pd.parseCIF(pdb_id, chain=chain_id).select(f"resnum {start} to {end}").select("calpha")
         pdb_sequence_dict = dict(zip(pdb_alpha.getResnums(), pdb_alpha.getSequence()))
-        ref_sequence = self.uniprot_sequence[info_dict["unp_start"] - 1: info_dict["unp_end"]]
+        ref_sequence = self.uniprot_sequence[unp_start - 1: unp_end]
         residue_mapping = {}
+        mismatches = []
         for i in range(len(ref_sequence)):
-            index_1 = i + info_dict["start"]
+            index_1 = i + start
             if index_1 in pdb_sequence_dict:
-                assert pdb_sequence_dict[index_1] == ref_sequence[i]
-                residue_mapping[index_1] = i + info_dict["unp_start"]
-        return residue_mapping
+                if pdb_sequence_dict[index_1] != ref_sequence[i]:
+                    mismatches.append((index_1, pdb_sequence_dict[index_1], ref_sequence[i]))
+                residue_mapping[index_1] = i + unp_start
+        return residue_mapping, mismatches
 
 
 if __name__ == "__main__":
