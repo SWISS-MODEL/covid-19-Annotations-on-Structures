@@ -19,12 +19,17 @@ authors:
     affiliation: 1  
   - name: Laura Blum
     affiliation: 2
+  - name: Michelle Gill
+    orcid: 0000-0002-2861-355X
+    affiliation: 3
     
 affiliations:
  - name: SIB Swiss Institute of Bioinformatics & Biozentrum, University of Basel, Klingelbergstrasse 50–70, CH-4056 Basel, Switzerland
    index: 1
  - name: Middlebury College, Middlebury, VT, 05753, United States of America
    index: 2
+ - name: NVIDIA, 2788 San Tomas Expressway, Santa Clara, CA, 95051, United States of America
+   index: 3
 date: 11 April 2020
 bibliography: paper.bib
 event: Covid2020
