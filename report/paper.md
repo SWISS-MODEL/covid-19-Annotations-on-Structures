@@ -22,6 +22,9 @@ authors:
   - name: Michelle Gill
     orcid: 0000-0002-2861-355X
     affiliation: 3
+  - name: Didier Barradas-Bautista
+    orcid: 0000-0002-6464-6607
+    affiliation: 4
     
 affiliations:
  - name: SIB Swiss Institute of Bioinformatics & Biozentrum, University of Basel, Klingelbergstrasse 50–70, CH-4056 Basel, Switzerland
@@ -30,6 +33,8 @@ affiliations:
    index: 2
  - name: NVIDIA, 2788 San Tomas Expressway, Santa Clara, CA, 95051, United States of America
    index: 3
+ - name: King Abdullah University of Science and Technology, Thuwal 23955-6900, Kingdom of Saudi Arabia
+   index: 4
 date: 11 April 2020
 bibliography: paper.bib
 event: Covid2020
