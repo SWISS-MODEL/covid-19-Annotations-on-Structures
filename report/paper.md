@@ -25,6 +25,8 @@ authors:
   - name: Didier Barradas-Bautista
     orcid: 0000-0002-6464-6607
     affiliation: 4
+  - name: Janani Durairaj
+    affiliation: 5
     
 affiliations:
  - name: SIB Swiss Institute of Bioinformatics & Biozentrum, University of Basel, Klingelbergstrasse 50–70, CH-4056 Basel, Switzerland
@@ -35,6 +37,8 @@ affiliations:
    index: 3
  - name: King Abdullah University of Science and Technology, Thuwal 23955-6900, Kingdom of Saudi Arabia
    index: 4
+ - name: Bioinformatics Group, Department of Plant Sciences, Wageningen University, Netherlands
+   index: 5
 date: 11 April 2020
 bibliography: paper.bib
 event: Covid2020
