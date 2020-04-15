@@ -118,6 +118,33 @@
         "ideas",
         "content"
       ]
+    },
+    {
+      "login": "Ninjani",
+      "name": "Ninjani",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/48680156?v=4",
+      "profile": "https://gitlab.com/ninjani23",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "akdel",
+      "name": "mehmet",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/9914131?v=4",
+      "profile": "https://github.com/akdel",
+      "contributions": [
+        "content"
+      ]
+    },
+    {
+      "login": "mlgill",
+      "name": "Michelle Gill",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/1757241?v=4",
+      "profile": "http://michellelynngill.com",
+      "contributions": [
+        "content"
+      ]
     }
   ],
   "contributorsPerLine": 7,

@@ -15,6 +15,7 @@
 # 4. pca fluctuations obtained from different confirmations
 import typing
 from dataclasses import dataclass
+from pathlib import Path
 
 import numpy as np
 import prody as pd
@@ -136,6 +137,81 @@ def get_stiffness(enm, calphas, n_modes=6):
     return np.mean(pd.calcMechStiff(enm[:n_modes], calphas), axis=0)
 
 
+# Amino acid solvent accessibility measurements
+# C. Chotia, The Nature of the Accessible and Buried Surfaces in Proteins, J. Mol. Biol., 105(1975)1-14.
+# https://www.sciencedirect.com/science/article/abs/pii/0022283676901911?via%3Dihub
+# http://prowl.rockefeller.edu/aainfo/volume.htm
+AA_SA_VOL = dict(zip(['ALA', 'ARG', 'ASP', 'ASN', 'CYS', 'GLU', 'GLN', 'GLY', 'HIS', 'ILE', 
+                      'LEU', 'LYS', 'MET', 'PHE', 'PRO', 'SER', 'THR', 'TRP', 'TYR', 'VAL'],
+                     [ 115.,  225.,  150.,  160.,  135.,  190.,  180.,   75.,  195.,  175., 
+                       170.,  200.,  185.,  210.,  145.,  115.,  140.,  255.,  230.,  155.]))
+
+
+def get_relative_solvent_accessibility(pdb_id, chain_id, residue_mapper, aa_surface_area=AA_SA_VOL):
+    """
+    Run DSSP on a PDB file and return the resulting AtomGroup
+    
+    Parameters
+    ----------
+    pdb_id
+        string containing PDB ID
+    chain_id
+        string containing the selected chain ID(s). Can be None for all chains.
+    residue_mapper
+        dictionary of residue - unitprot mappings
+    aa_surface_area
+        dictionary with amino acid abbreviations as keys and surface area 
+        calculations as values
+
+    Returns
+    -------
+    a numpy array containing relative solvent accessibility measurement for residues
+    """
+
+    mapped_residue_list = list(residue_mapper.keys())
+
+    # DSSP doesn't work with CIF-based atom groups, so must re-run here
+    structure = pd.parsePDB(pdb_id, chain=chain_id)
+    
+    if chain_id is not None:
+        pdb_gz_file = '.'.join([pdb_id + f'_chain{chain_id}', 'pdb.gz'])
+        pdb_file = '.'.join([pdb_id + f'_chain{chain_id}', 'pdb'])
+        dssp_file = '.'.join([pdb_id + f'_chain{chain_id}', 'dssp'])
+        pd.writePDB(pdb_file, structure) # Must write file with only chain selections
+    else:
+        pdb_gz_file = '.'.join([pdb_id, 'pdb.gz'])
+        pdb_file = '.'.join([pdb_id, 'pdb'])
+        dssp_file = '.'.join([pdb_id, 'dssp'])
+        
+    pd.execDSSP(pdb_file) # TODO: how to silence output from the DSSP functions
+    pd.parseDSSP(dssp_file, structure)
+
+    # File cleanup
+    # TODO: redirect prody file output to use tmpdir?
+    file_list = [pdb_gz_file, pdb_file, dssp_file]
+    for fil in file_list:
+        filename = Path(fil)
+        if filename.exists():
+            filename.unlink()
+
+    # Gather results -- currently using -1 for any missing residues
+    rel_acc_list = list()
+    for res in mapped_residue_list:
+        dssp_resi = structure[chain_id, res]
+        if dssp_resi is not None:
+            valid_dssp = dssp_resi.getData('dssp_resnum')[0] != 0
+            if valid_dssp:
+                surface_accessibilty = dssp_resi.getData('dssp_acc')[0]
+                resn = dssp_resi.getResname()
+                rel_surface_accessibilty = surface_accessibilty / aa_surface_area[resn]
+                rel_acc_list.append(rel_surface_accessibilty)
+            else:
+                rel_acc_list.append(-1)
+        else:
+            rel_acc_list.append(-1)
+
+    return np.array(rel_acc_list)
+
 def numbers_to_colors(numbers, cmap="jet", log=False):
     """
     Converts a list of real-valued numbers to colors according to a colormap
@@ -212,6 +288,7 @@ class StructureAnnotation:
     perturbation_effectiveness: np.ndarray
     perturbation_sensitivity: np.ndarray
     mechanical_stiffness: np.ndarray
+    relative_solvent_accessibility: np.ndarray
     hinge_sites: list
     anm: pd.dynamics.anm.ANM
     gnm: pd.dynamics.gnm.GNM
@@ -233,6 +310,8 @@ class StructureAnnotation:
                                                   numbers_to_colors(self.perturbation_sensitivity[indices]))
         mapping["Mechanical Stiffness"] = zip(uniprot_residues, np.round(self.mechanical_stiffness[indices], 2),
                                               numbers_to_colors(self.mechanical_stiffness[indices]))
+        mapping["Relative Solvent Accessibility"] = zip(uniprot_residues, np.round(self.relative_solvent_accessibility[indices], 2),
+                                                        numbers_to_colors(self.relative_solvent_accessibility[indices]))
         for i in range(len(self.hinge_sites)):
             mapping[f"Hinge sites for mode {i}"] = [(self.residue_mapper[self.calphas[r].getResnum()],
                                                      f"mode {i}",
@@ -259,7 +338,11 @@ def get_annotations_single(uniprot_id, pdb_id, chain, residue_mapper: dict, n_mo
     hinge_sites = [get_hinge_indices(gnm, mode=n) for n in range(n_modes)]
     return StructureAnnotation(pdb_id, chain, structure, calphas,
                                uniprot_id, residue_mapper,
-                               get_enm_fluctuations(anm, n_modes), effectiveness, sensitivity, get_stiffness(anm, calphas, n_modes),
+                               get_enm_fluctuations(anm, n_modes), 
+                               effectiveness, 
+                               sensitivity, 
+                               get_stiffness(anm, calphas, n_modes),
+                               get_relative_solvent_accessibility(pdb_id, chain, residue_mapper),
                                hinge_sites, anm, gnm)
 
 

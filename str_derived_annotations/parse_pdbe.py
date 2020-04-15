@@ -7,7 +7,8 @@ import requests as rq
 
 from utils.uniprot import seq_from_ac
 
-MAPPING_FILE = "uniprot_segments_observed.tsv"
+#MAPPING_FILE = "uniprot_segments_observed.tsv"
+MAPPING_FILE = "/home/mgill/code/covid-19-Annotations-on-Structures/str_derived_annotations/uniprot_segments_observed.tsv"
 
 
 def get_sequences_from_fasta_yield(fasta_file: typing.Union[str, Path]) -> tuple:
