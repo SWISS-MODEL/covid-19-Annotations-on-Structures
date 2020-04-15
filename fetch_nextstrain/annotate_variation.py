@@ -1,4 +1,5 @@
 import csv
+import matplotlib.pyplot as plt
 from argparse import ArgumentParser
 from utils.uniprot import seq_from_ac
 from utils.sm_annotations import Annotation
@@ -27,7 +28,20 @@ def _parse_args():
         "SWISS-MODEL",
         action="store_true",
     )
-    return parser.parse_args()
+    parser.add_argument(
+        "--cm",
+        dest="cm",
+        help="String that specifies a matplotlib color map to encode number of "
+        "distinct amino acids at a certain location. Default: cool. "
+        "Available maps:"
+        "(https://matplotlib.org/3.1.1/gallery/color/colormap_reference.html).",
+        default="cool",
+    )
+    args = parser.parse_args()
+    # Directly assign matplotlib colormap to args. If the specified map is not
+    # available, matplotlib raises an expressive error message.
+    args.cm = plt.get_cmap(args.cm)
+    return args
 
 
 def _parse_mutations(csv_file):
@@ -39,7 +53,7 @@ def _parse_mutations(csv_file):
     return mutations
 
 
-def _annotate(mutations):
+def _annotate(mutations, cm):
     """
     The nextstrain data is relative to a phylogenetic tree that they build.
     So a mutation at location x can either be a mutation from reference 
@@ -69,13 +83,22 @@ def _annotate(mutations):
         variations[key].add(m[1][0])  # first letter -> mutation from
         variations[key].add(m[1][-1])  # last letter -> mutation to
 
+    # find min/max numbers of distinc amino acids to scale color gradient
+    sizes = [len(item) for item in variations.values()]
+    min_mut = min(sizes)
+    max_mut = max(sizes)
+
     # Let's not directly add it to the annotation object but rather do an
     # intermediate list so we can sort it by uniprot accession code / residue
     # number
     annotation_data = list()
     for var_key in variations.keys():
+        if max_mut == min_mut:
+            color = cm(1.0)
+        else:
+            color = cm(float(len(variations[var_key]) - min_mut) / (max_mut - min_mut))
         annotation_data.append(
-            [var_key[0], var_key[1], "r", ",".join(variations[var_key])]
+            [var_key[0], var_key[1], color, ",".join(variations[var_key])]
         )
     annotation = Annotation()
     for d in sorted(annotation_data):
@@ -87,7 +110,7 @@ def _annotate(mutations):
 def main():
     args = _parse_args()
     mutations = _parse_mutations(args.csv)
-    annotation = _annotate(mutations)
+    annotation = _annotate(mutations, args.cm)
     if args.post:
         print(annotation.post())
     else:
