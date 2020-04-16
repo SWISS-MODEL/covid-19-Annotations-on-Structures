@@ -136,7 +136,7 @@ def example_single(pdb_id, uniprot_id, output_path, post=False, email=None):
     reference_mapper = parse_pdbe.UniProtBasedMapping(uniprot_id)
     pdb_info = reference_mapper.search_pdb_by_id(pdb_id)
     residue_mapping, _ = reference_mapper.map_to_pdb(pdb_info)
-    annotations = annotate.get_annotations_single(uniprot_id, pdb_id, pdb_info["chain_id"], residue_mapping, n_modes=6)
+    annotations = annotate.get_annotations_single(uniprot_id, pdb_id, residue_mapping, pdb_info["chain_id"], n_modes=6)
 
     # Create output directory
     annotation_dir = Path(output_path)
@@ -160,5 +160,5 @@ if __name__ == "__main__":
     post = False
     email = None
     
-    #example_single(pdb_id, uniprot_id, output_path, post, email)
+    example_single(pdb_id, uniprot_id, output_path, post, email)
     example_ensemble(uniprot_id, pdb_id, pdb_search_str, output_path, post, email)

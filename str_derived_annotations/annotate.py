@@ -147,43 +147,38 @@ AA_SA_VOL = dict(zip(['ALA', 'ARG', 'ASP', 'ASN', 'CYS', 'GLU', 'GLN', 'GLY', 'H
                        170.,  200.,  185.,  210.,  145.,  115.,  140.,  255.,  230.,  155.]))
 
 
-def get_relative_solvent_accessibility(pdb_id, chain_id, residue_mapper, aa_surface_area=AA_SA_VOL):
+def get_relative_solvent_accessibility(pdb_id, residue_mapper, chain=None, aa_surface_area=AA_SA_VOL):
     """
     Run DSSP on a PDB file and return the resulting AtomGroup
     
     Parameters
     ----------
     pdb_id
-        string containing PDB ID
-    chain_id
-        string containing the selected chain ID(s). Can be None for all chains.
+        String containing PDB ID
     residue_mapper
-        dictionary of residue - unitprot mappings
+        Dictionary of residue - unitprot mappings
+    chain
+        String containing the selected chain ID(s). Can be None for all chains.
     aa_surface_area
-        dictionary with amino acid abbreviations as keys and surface area 
+        Dictionary with amino acid abbreviations as keys and surface area 
         calculations as values
 
     Returns
     -------
     a numpy array containing relative solvent accessibility measurement for residues
     """
-
-    mapped_residue_list = list(residue_mapper.keys())
-
-    # DSSP doesn't work with CIF-based atom groups, so must re-run here
-    structure = pd.parsePDB(pdb_id, chain=chain_id)
-    
-    if chain_id is not None:
-        pdb_gz_file = '.'.join([pdb_id + f'_chain{chain_id}', 'pdb.gz'])
-        pdb_file = '.'.join([pdb_id + f'_chain{chain_id}', 'pdb'])
-        dssp_file = '.'.join([pdb_id + f'_chain{chain_id}', 'dssp'])
-        pd.writePDB(pdb_file, structure) # Must write file with only chain selections
-    else:
-        pdb_gz_file = '.'.join([pdb_id, 'pdb.gz'])
-        pdb_file = '.'.join([pdb_id, 'pdb'])
-        dssp_file = '.'.join([pdb_id, 'dssp'])
+            
+    pdb_gz_file = '.'.join([pdb_id + '_solvent', 'pdb.gz'])
+    pdb_file = '.'.join([pdb_id + '_solvent', 'pdb'])
+    dssp_file = '.'.join([pdb_id + '_solvent', 'dssp'])
         
-    pd.execDSSP(pdb_file) # TODO: how to silence output from the DSSP functions
+    # DSSP doesn't work with CIF-based atom groups, so must re-run here
+    structure = pd.parsePDB(pdb_id, chain=chain)
+    
+    # Must write PDB file for DSSP with only chain selections
+    # TODO how to silence output from the DSSP functions
+    pd.writePDB(pdb_file, structure) 
+    pd.execDSSP(pdb_file) 
     pd.parseDSSP(dssp_file, structure)
 
     # File cleanup
@@ -195,9 +190,11 @@ def get_relative_solvent_accessibility(pdb_id, chain_id, residue_mapper, aa_surf
             filename.unlink()
 
     # Gather results -- currently using -1 for any missing residues
+    mapped_residue_list = list(residue_mapper.keys())
+    
     rel_acc_list = list()
     for res in mapped_residue_list:
-        dssp_resi = structure[chain_id, res]
+        dssp_resi = structure[chain, res]
         if dssp_resi is not None:
             valid_dssp = dssp_resi.getData('dssp_resnum')[0] != 0
             if valid_dssp:
@@ -330,7 +327,7 @@ def get_annotations_ensemble(reference_uniprot_id, structure_chain_id_pairs, res
                               rmsds_to_reference, rmsds_per_residue, pca_fluctuations, ensemble)
 
 
-def get_annotations_single(uniprot_id, pdb_id, chain, residue_mapper: dict, n_modes=6):
+def get_annotations_single(uniprot_id, pdb_id, residue_mapper: dict, chain=None, n_modes=6):
     structure = pd.parseCIF(pdb_id, chain=chain)
     gnm, calphas = pd.calcGNM(structure, n_modes=n_modes)
     anm, _ = pd.calcANM(structure, n_modes=n_modes)
@@ -342,7 +339,7 @@ def get_annotations_single(uniprot_id, pdb_id, chain, residue_mapper: dict, n_mo
                                effectiveness, 
                                sensitivity, 
                                get_stiffness(anm, calphas, n_modes),
-                               get_relative_solvent_accessibility(pdb_id, chain, residue_mapper),
+                               get_relative_solvent_accessibility(pdb_id, residue_mapper, chain=chain),
                                hinge_sites, anm, gnm)
 
 
