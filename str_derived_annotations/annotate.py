@@ -16,6 +16,8 @@
 import typing
 from dataclasses import dataclass
 from pathlib import Path
+import tempfile
+import os
 
 import numpy as np
 import prody as pd
@@ -146,8 +148,8 @@ AA_SA_VOL = dict(zip(['ALA', 'ARG', 'ASP', 'ASN', 'CYS', 'GLU', 'GLN', 'GLY', 'H
                      [ 115.,  225.,  150.,  160.,  135.,  190.,  180.,   75.,  195.,  175., 
                        170.,  200.,  185.,  210.,  145.,  115.,  140.,  255.,  230.,  155.]))
 
-
-def get_relative_solvent_accessibility(pdb_id, residue_mapper, chain=None, aa_surface_area=AA_SA_VOL):
+                               
+def get_relative_solvent_accessibility(pdb_id, residue_mapper, chain, full_pdb_solvent_accessibility=True, aa_surface_area=AA_SA_VOL):
     """
     Run DSSP on a PDB file and return the resulting AtomGroup
     
@@ -158,7 +160,10 @@ def get_relative_solvent_accessibility(pdb_id, residue_mapper, chain=None, aa_su
     residue_mapper
         Dictionary of residue - unitprot mappings
     chain
-        String containing the selected chain ID(s). Can be None for all chains.
+        String containing the selected chain ID(s) from the residue mapper
+    full_pdb_solvent_accessibility
+        Boolean to use the full PDB for solvent accessibility calculations -- otherwise
+        only the chain residues will be selected. Default is True.
     aa_surface_area
         Dictionary with amino acid abbreviations as keys and surface area 
         calculations as values
@@ -167,47 +172,47 @@ def get_relative_solvent_accessibility(pdb_id, residue_mapper, chain=None, aa_su
     -------
     a numpy array containing relative solvent accessibility measurement for residues
     """
-            
-    pdb_gz_file = '.'.join([pdb_id + '_solvent', 'pdb.gz'])
-    pdb_file = '.'.join([pdb_id + '_solvent', 'pdb'])
-    dssp_file = '.'.join([pdb_id + '_solvent', 'dssp'])
+    
+    if full_pdb_solvent_accessibility:
+        dssp_chain = None
+    else:
+        dssp_chain = chain
         
-    # DSSP doesn't work with CIF-based atom groups, so must re-run here
-    structure = pd.parsePDB(pdb_id, chain=chain)
-    
-    # Must write PDB file for DSSP with only chain selections
-    # TODO how to silence output from the DSSP functions
-    pd.writePDB(pdb_file, structure) 
-    pd.execDSSP(pdb_file) 
-    pd.parseDSSP(dssp_file, structure)
+    with tempfile.TemporaryDirectory() as tdir:
+        pdb_file = os.path.join(tdir, '.'.join([pdb_id, 'pdb']))
+        dssp_file = os.path.join(tdir, '.'.join([pdb_id, 'dssp']))
+            
+        # DSSP doesn't work with CIF-based atom groups, so must re-run here
+        pd.pathPDBFolder(tdir)
+        structure = pd.parsePDB(pdb_id, chain=dssp_chain)
+        
+        # Must write PDB file for DSSP with only chain selections
+        # TODO how to silence output from the DSSP functions
+        pd.writePDB(pdb_file, structure) 
+        pd.execDSSP(pdb_file, outputdir=tdir) 
+        pd.parseDSSP(dssp_file, structure)
 
-    # File cleanup
-    # TODO: redirect prody file output to use tmpdir?
-    file_list = [pdb_gz_file, pdb_file, dssp_file]
-    for fil in file_list:
-        filename = Path(fil)
-        if filename.exists():
-            filename.unlink()
-
-    # Gather results -- currently using -1 for any missing residues
+    # Gather results
+    # There should not be missing residues 
     mapped_residue_list = list(residue_mapper.keys())
-    
+    mapped_residue_list = ' '.join([str(x) for x in mapped_residue_list])
+
+    selection_string = f"resnum {mapped_residue_list}"
+    if dssp_chain is not None:
+        selection_string += f" AND chain {chain}"
+        
+    iter_resi_list = sorted(set(structure.select(selection_string).getResnums()))
     rel_acc_list = list()
-    for res in mapped_residue_list:
-        dssp_resi = structure[chain, res]
-        if dssp_resi is not None:
-            valid_dssp = dssp_resi.getData('dssp_resnum')[0] != 0
-            if valid_dssp:
-                surface_accessibilty = dssp_resi.getData('dssp_acc')[0]
-                resn = dssp_resi.getResname()
-                rel_surface_accessibilty = surface_accessibilty / aa_surface_area[resn]
-                rel_acc_list.append(rel_surface_accessibilty)
-            else:
-                rel_acc_list.append(-1)
-        else:
-            rel_acc_list.append(-1)
+
+    for resi in iter_resi_list:
+        dssp_resi = structure[(chain, resi)]
+        surface_accessibilty = dssp_resi.getData('dssp_acc')[0]
+        resn = dssp_resi.getResname()
+        rel_surface_accessibilty = surface_accessibilty / aa_surface_area[resn]
+        rel_acc_list.append(rel_surface_accessibilty)
 
     return np.array(rel_acc_list)
+
 
 def numbers_to_colors(numbers, cmap="jet", log=False):
     """
@@ -327,7 +332,7 @@ def get_annotations_ensemble(reference_uniprot_id, structure_chain_id_pairs, res
                               rmsds_to_reference, rmsds_per_residue, pca_fluctuations, ensemble)
 
 
-def get_annotations_single(uniprot_id, pdb_id, residue_mapper: dict, chain=None, n_modes=6):
+def get_annotations_single(uniprot_id, pdb_id, residue_mapper: dict, chain=None, n_modes=6, full_pdb_solvent_accessibility=True):
     structure = pd.parseCIF(pdb_id, chain=chain)
     gnm, calphas = pd.calcGNM(structure, n_modes=n_modes)
     anm, _ = pd.calcANM(structure, n_modes=n_modes)
@@ -339,7 +344,8 @@ def get_annotations_single(uniprot_id, pdb_id, residue_mapper: dict, chain=None,
                                effectiveness, 
                                sensitivity, 
                                get_stiffness(anm, calphas, n_modes),
-                               get_relative_solvent_accessibility(pdb_id, residue_mapper, chain=chain),
+                               get_relative_solvent_accessibility(pdb_id, residue_mapper, chain=chain, 
+                                                                  full_pdb_solvent_accessibility=full_pdb_solvent_accessibility),
                                hinge_sites, anm, gnm)
 
 

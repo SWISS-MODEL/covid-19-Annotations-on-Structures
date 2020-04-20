@@ -93,23 +93,23 @@ def example_ensemble(uniprot_id, pdb_id, pdb_search_str, output_path, post=False
     if post:
         assert email is not None, 'Email must be set to post results'
         
+    # Create output directory
+    annotation_dir = Path(output_path)
+    if not annotation_dir.exists():
+        annotation_dir.mkdir(parents=True)
+        
     reference_mapper = parse_pdbe.UniProtBasedMapping(uniprot_id)
     pdb_info_list = reference_mapper.search_pdbs_by_protein_name(pdb_search_str)
     pdb_chain_pairs = [(p["pdb_id"], p["chain_id"]) for p in pdb_info_list]
     residue_mapping, _ = reference_mapper.map_to_pdb(pdb_info_list[0])
     annotations = annotate.get_annotations_ensemble(uniprot_id, pdb_chain_pairs, residue_mapping)
 
-    # Create output directory
-    annotation_dir = Path(output_path)
-    if not annotation_dir.exists():
-        annotation_dir.mkdir(parents=True)
-
     # Make post=True and change email to post to beta SWISS MODEL website
     annotators, titles, urls = annotate.make_swiss_model_annotators(annotations, post=post, email=email)
     create_annotation_file(annotators, titles, urls, annotation_dir)
 
 
-def example_single(pdb_id, uniprot_id, output_path, post=False, email=None):
+def example_single(pdb_id, uniprot_id, output_path, full_pdb_solvent_accessibility=True, post=False, email=None):
     """
     Calculate annotations for single PDB and upload to SWISS MODEL
     
@@ -121,6 +121,9 @@ def example_single(pdb_id, uniprot_id, output_path, post=False, email=None):
         String containing uniprot id
     output_path
         String containing the output directory
+    full_pdb_solvent_accessibility
+        Boolean to select whether full PDB or just the chain(s) from the reference mapper are used for solvent calculation.
+        Default is True, which will use entire PDB.
     post
         Boolean that controls whether results are sent to SWISS MODEL
         Default is False, setting to True requires email
@@ -128,23 +131,35 @@ def example_single(pdb_id, uniprot_id, output_path, post=False, email=None):
         String containing email or None, required to post results
         Default is None
     """
-    # TODO fix  / test chain=None
-        
+     
     if post:
         assert email is not None, 'Email must be suplied to post results'
+        
+    # Create output directory
+    # Relative_Solvent_Accesibility_PDB_Selection.txt
+    annotation_dir = Path(output_path)
+    if not annotation_dir.exists():
+        annotation_dir.mkdir(parents=True)
     
     reference_mapper = parse_pdbe.UniProtBasedMapping(uniprot_id)
     pdb_info = reference_mapper.search_pdb_by_id(pdb_id)
     residue_mapping, _ = reference_mapper.map_to_pdb(pdb_info)
-    annotations = annotate.get_annotations_single(uniprot_id, pdb_id, residue_mapping, pdb_info["chain_id"], n_modes=6)
+    annotations = annotate.get_annotations_single(uniprot_id, pdb_id, residue_mapping, pdb_info["chain_id"], 
+                                                  n_modes=6, full_pdb_solvent_accessibility=full_pdb_solvent_accessibility)
 
-    # Create output directory
-    annotation_dir = Path(output_path)
-    if not annotation_dir.exists():
-        annotation_dir.mkdir(parents=True)
-        
-    # Write output as CSV file
+    # Write output as CSV file also note which 
     create_csv_file(annotations, annotation_dir)
+    
+    solvent_accessibility_text = f'Solvent accessibility calculations were performed on PDB ID {pdb_id}.\n'
+    if full_pdb_solvent_accessibility:
+        solvent_accessibility_text += 'All atoms from the PDB file were present during solvent calculation.\n'
+    else:
+        solvent_accessibility_text += f'Only atoms from chain(s) {solvent_accessibility_text} were present during the calculation.\n'
+        
+    solvent_accessibility_text += f'Output atoms correspond to those from the reference mapper (chain {pdb_info["chain_id"]}).'
+        
+    with open(annotation_dir / 'Relative_Solvent_Accesibility_PDB_Selection.txt', 'w') as fh:
+        fh.write(solvent_accessibility_text)
     
     # Make post=True and change email to post to beta SWISS MODEL website
     annotators, titles, urls = annotate.make_swiss_model_annotators(annotations, post=post, email=email)
@@ -160,5 +175,11 @@ if __name__ == "__main__":
     post = False
     email = None
     
-    example_single(pdb_id, uniprot_id, output_path, post, email)
+    # `full_pdb_solvent_accessibility` must be True or False
+    # True will use entire pdb for solvent accessibility calculation
+    # False will only use region mapped by residue mapper
+    # In either case, only the region from the residue mapper is output
+    full_pdb_solvent_accessibility = True 
+    
+    example_single(pdb_id, uniprot_id, output_path, full_pdb_solvent_accessibility, post, email)
     example_ensemble(uniprot_id, pdb_id, pdb_search_str, output_path, post, email)
