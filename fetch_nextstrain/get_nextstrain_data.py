@@ -4,24 +4,34 @@ import json
 import requests
 
 def parse_json(input_file):
-    ''' Wrapper to colect the data from parse_node. Currently, results are organized as a list for each isolate. First field contains isolate name, second field mutation data and third field all the metadata'''
+    '''
+    Wrapper to colect the data from parse_node. Currently, results
+    are organized as a list for each isolate. First field contains
+    isolate name, second field mutation data and third field all
+    the metadata.
+    '''
     
     data = []
 
     def parse_node(input_file, array):    
         '''
-        Search recursively across a json dictionary and return the keys corresponding to name, branch_attrs (mutations info), node_attrs (metadata, e.g. authors).
+        Search recursively across a json dictionary and return the
+        keys corresponding to name, branch_attrs (mutations info),
+        node_attrs (metadata, e.g. authors).
         ''' 
         root = input_file
         if 'history' not in root['name'] and 'NODE' not in root['name']:
             isolate = root['name']
             mutations_node = root['branch_attrs']['mutations']
-            mutations = [(mutation, mutations_node[mutation]) for mutation in mutations_node if mutation != 'nuc']
-            author = root['node_attrs']['author']
-            gisaig = root['node_attrs']['gisaid_epi_isl']
-            if mutations:
-                for item in mutations:
-                    array.append([isolate, [item], author, gisaig])
+#            mutations = [(mutation, mutations_node[mutation]) for mutation in mutations_node if mutation != 'nuc']
+            author = root['node_attrs']['author']['value']
+            gisaig = root['node_attrs']['gisaid_epi_isl']['value']
+            if mutations_node:
+                for key in mutations_node:
+                    if key != 'nuc':
+                        protein = key
+                        mutation = mutations_node[key][0]
+                        array.append((isolate, protein, mutation, author, gisaig))
         if 'children' in root:
             for record in root['children']:
                 parse_node(record, array)
@@ -48,21 +58,21 @@ def give_format_output(data):
         headers = f'Protein,ORF,Mutation,Isolate,Author,GISAID\n'
         fh.write(headers)
         for record in data:
-            if record[1][0][0] in identifiers:
-                protein = identifiers[record[1][0][0]]
+            if record[1] in identifiers:
+                protein = identifiers[record[1]]
             else:
-                protein = record[1][0][0]
-            orf = record[1][0][0]
+                protein = record[1]
+            orf = record[1]
             if orf == 'ORF1b':
-                original = record[1][0][1][0][0]
-                mutant = record[1][0][1][0][-1]
-                position = int(record[1][0][1][0][1:-1]) + 4401
+                original = record[2][0]
+                mutant = record[2][-1]
+                position = int(record[2][1:-1]) + 4401
                 mutation = original + str(position) + mutant
             else:
-                mutation = record[1][0][1][0]
-            author = record[2]['value']
+                mutation = record[2]
+            author = record[3]
             isolate = record[0]
-            gisaid = record[3]['value']
+            gisaid = record[4]
             output = f'{protein},{orf},{mutation},{isolate},{author},{gisaid}\n'
             fh.write(output)
 
