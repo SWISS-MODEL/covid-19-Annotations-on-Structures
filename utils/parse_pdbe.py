@@ -1,8 +1,11 @@
+import ftplib
+import gzip
 import typing
+import xml.etree.ElementTree as ET
+from collections import defaultdict
 from pathlib import Path
 
 import intervaltree as it
-import prody as pd
 import requests as rq
 
 from utils.uniprot import seq_from_ac
@@ -32,12 +35,12 @@ def get_sequences_from_fasta_yield(fasta_file: typing.Union[str, Path]) -> tuple
                 if current_key is None:
                     current_key = line.split(">")[1].strip()
                 else:
-                    yield (current_key, current_sequence)
+                    yield current_key, current_sequence
                     current_sequence = ""
                     current_key = line.split(">")[1].strip()
             else:
                 current_sequence += line.strip()
-        yield (current_key, current_sequence)
+        yield current_key, current_sequence
 
 
 def get_sequences_from_fasta(fasta_file: typing.Union[str, Path]) -> dict:
@@ -53,34 +56,64 @@ def get_sequences_from_fasta(fasta_file: typing.Union[str, Path]) -> dict:
     return {key: sequence for (key, sequence) in get_sequences_from_fasta_yield(fasta_file)}
 
 
-def parse_pdbe_mapping_file() -> dict:
+def get_sift_xml(pdb_id: str) -> ET.Element:
     """
-    A summary of the UniProt to PDBe residue level mapping (observed residues only),
-    showing the start and end residues of the mapping using SEQRES, PDB sequence and UniProt numbering.
+    Gets XML file for a PDB ID from SIFTS via FTP
+
+    Parameters
+    ----------
+    pdb_id
 
     Returns
     -------
-    dict of (pdb_id, chain_id): dict of (SP_PRIMARY, RES_BEG, RES_END, PDB_BEG, PDB_END, SP_BEG, SP_END)
+    ElementTree parsed XML Element
     """
+    ftp_address = "ftp.ebi.ac.uk"
+    ftp = ftplib.FTP(ftp_address)
+    ftp.login()
+    filepath = f"/pub/databases/msd/sifts/split_xml/{pdb_id[1:3]}"
+    filename = f"{pdb_id}.xml.gz"
+    ftp.cwd(filepath)
+    content = list()
+    ftp.retrbinary(f"RETR {filename}", content.append)
+    ftp.close()
+    content = b''.join(content)
+    return ET.fromstring(gzip.decompress(content).decode("utf-8"))
 
-    column_names = None
-    residue_mapping = {}
-    with open(MAPPING_FILE) as f:
-        for i, line in enumerate(f):
-            if i == 0:
+
+def get_pdb_to_uniprot_mapping(pdb_id: str):
+    """
+    Maps from PDB residue number to UniProt residue number for each chain
+    Missing residues are ignored
+
+    Parameters
+    ----------
+    pdb_id
+
+    Returns
+    -------
+    dict of {chain: dict of {uniprot_resnum: pdb_resnum}}
+    """
+    sift_xml = get_sift_xml(pdb_id)
+    entities = [x for x in sift_xml.iter() if "entity" in x.tag]
+    chains = defaultdict(dict)
+    for ent in entities:
+        for residue in [x for x in ent.iter() if "residue" in x.tag and not x.tag.endswith("Detail")]:
+            try:
+                pdb_entry = [x for x in residue.iter() if "dbSource" in x.attrib and x.attrib["dbSource"] == "PDB"][0]
+                pdb_resnum = pdb_entry.attrib["dbResNum"]
+                pdb_chain_id = pdb_entry.attrib["dbChainId"]
+                uniprot_resnum = [x for x in residue.iter() if "dbSource" in x.attrib and x.attrib["dbSource"] == "UniProt"][0].attrib["dbResNum"]
+                if pdb_resnum != "null":
+                    chains[pdb_chain_id][int(pdb_resnum)] = int(uniprot_resnum)
+            except IndexError:
                 continue
-            elif i == 1:
-                column_names = line.strip().split("\t")
-            else:
-                parts = line.strip().split("\t")
-                residue_mapping[(parts[0], parts[1])] = dict(zip(column_names[2:], parts[2:]))
-    return residue_mapping
+    return chains
 
 
 class UniProtBasedMapping:
     def __init__(self, uniprot_id: str):
         self.uniprot_id = uniprot_id
-        self.all_residue_mapping = parse_pdbe_mapping_file()
         self.PDBe_api_request_url = f"https://www.ebi.ac.uk/pdbe/api/mappings/best_structures/{uniprot_id}"
         self.uniprot_api_request_url = f"https://www.ebi.ac.uk/uniprot/api/covid-19/uniprotkb/accession/{uniprot_id}.gff"
         self.uniprot_sequence = seq_from_ac(uniprot_id)
@@ -126,31 +159,16 @@ class UniProtBasedMapping:
                            f"Are you sure this is a COVID-19 protein present in {self.uniprot_id}? "
                            f"Available IDs are {self.data.keys()}")
 
-    def map_to_pdb(self, info_dict):
-        pdb_id, chain_id = info_dict["pdb_id"], info_dict["chain_id"]
-        pdbe_mapping = self.all_residue_mapping[(pdb_id, chain_id)]
-        start, end = int(pdbe_mapping['PDB_BEG']), int(pdbe_mapping['PDB_END'])
-        unp_start, unp_end = int(pdbe_mapping["SP_BEG"]), int(pdbe_mapping["SP_END"])
-        pdb_alpha = pd.parseCIF(pdb_id, chain=chain_id).select(f"resnum {start} to {end}").select("calpha")
-        pdb_sequence_dict = dict(zip(pdb_alpha.getResnums(), pdb_alpha.getSequence()))
-        ref_sequence = self.uniprot_sequence[unp_start - 1: unp_end]
-        residue_mapping = {}
-        mismatches = []
-        for i in range(len(ref_sequence)):
-            index_1 = i + start
-            if index_1 in pdb_sequence_dict:
-                if pdb_sequence_dict[index_1] != ref_sequence[i]:
-                    mismatches.append((index_1, pdb_sequence_dict[index_1], ref_sequence[i]))
-                residue_mapping[index_1] = i + unp_start
-        return residue_mapping, mismatches
 
-
-if __name__ == "__main__":
+def main():
     mapping = UniProtBasedMapping("P0DTC2")
     mapping.list_available_annotations()
     print(mapping.uniprot_sequence)
     print(len(mapping.uniprot_sequence))
-    print(mapping.search_pdbs_by_protein_name("Spike protein S1"))
-    # mapping.protein_annotation_intervals["3C-like proteinase"]
-    # print(mapping.data["6vxx"])
-    # print(mapping.search_pdb_by_id("6lu7"))
+    for x in mapping.search_pdbs_by_protein_name("Spike protein S1"):
+        print(x)
+    print(get_pdb_to_uniprot_mapping("6vsb"))
+
+
+if __name__ == "__main__":
+    main()
