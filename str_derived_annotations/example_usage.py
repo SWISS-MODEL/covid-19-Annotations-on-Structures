@@ -104,10 +104,10 @@ def example_ensemble(uniprot_id, pdb_search_str, output_path, post=False, email=
     pdb_chain_pairs = [(p["pdb_id"], p["chain_id"]) for p in pdb_info_list]
     residue_mapping = parse_pdbe.get_pdb_to_uniprot_mapping(pdb_info_list[0]["pdb_id"])[pdb_info_list[0]["chain_id"]]
     annotations = annotate.get_annotations_ensemble(uniprot_id, pdb_chain_pairs, residue_mapping)
-
     # Make post=True and change email to post to beta SWISS MODEL website
     annotators, titles, urls = annotate.make_swiss_model_annotators(annotations, post=post, email=email)
     create_annotation_file(annotators, titles, urls, annotation_dir)
+    annotations.write_rmsds_to_reference(annotation_dir / f"RMSD_to_{annotations.pdb_id}_{annotations.chain}.txt")
 
 
 def example_single(pdb_id, uniprot_id, output_path, full_pdb_solvent_accessibility=True, post=False, email=None):
@@ -181,7 +181,6 @@ def main():
     # False will only use region mapped by residue mapper
     # In either case, only the region from the residue mapper is output
     full_pdb_solvent_accessibility = True
-
     example_single(pdb_id, uniprot_id, output_path, full_pdb_solvent_accessibility, post, email)
     example_ensemble(uniprot_id, pdb_search_str, output_path, post, email)
 

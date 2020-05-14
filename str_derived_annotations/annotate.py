@@ -13,11 +13,10 @@
 # 2. sensitivity to perturbation
 # 3. mechanical stiffness
 # 4. pca fluctuations obtained from different confirmations
+import os
+import tempfile
 import typing
 from dataclasses import dataclass
-from pathlib import Path
-import tempfile
-import os
 
 import numpy as np
 import prody as pd
@@ -274,6 +273,12 @@ class EnsembleAnnotation:
                                           numbers_to_colors(self.pca_fluctuations[reference_aln_indices]))
 
         return mapping
+
+    def write_rmsds_to_reference(self, filename):
+        with open(filename, "w") as f:
+            f.write(f"PDB ID\tRMSD to reference PDB {self.pdb_id}_{self.chain}\n")
+            for i, name in enumerate(self.ensemble.getLabels()[1:]):
+                f.write(f"{name}\t{self.rmsds_to_reference[i + 1]}\n")
 
 
 @dataclass

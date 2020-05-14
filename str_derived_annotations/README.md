@@ -13,7 +13,7 @@
 
 For a set (ensemble) of related PDB IDs, e.g. the same protein crystallized with different ligands, the following annotations are produced is the directory set by the user:
 
-* `**TO BE UPDATED BY NINJANI WHEN FILE IS CREATED**` : RMSD of each structure to the reference structure (the first PDB ID in list)
+* `RMSD_to_<PDB>_<CHAIN>.txt` : RMSD of each structure to the reference structure (the first PDB ID in list)
 * `Average_RMSD.txt`: Average RMSD of each residue across all structures
 * `PCA_fluctuations.txt`: Squared fluctuations of each residue according to a PCA across all structures
 
