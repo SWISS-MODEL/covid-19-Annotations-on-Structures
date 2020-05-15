@@ -116,10 +116,10 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="http://www.linkedin.com/in/didier-barradas-bautista"><img src="https://avatars3.githubusercontent.com/u/17081199?v=4" width="100px;" alt=""/><br /><sub><b>Didier Barradas Bautista</b></sub></a><br /><a href="#content-D-Barradas" title="Content">🖋</a></td>
     <td align="center"><a href="https://github.com/bmeldal"><img src="https://avatars2.githubusercontent.com/u/10517124?v=4" width="100px;" alt=""/><br /><sub><b>Birgit Meldal</b></sub></a><br /><a href="#ideas-bmeldal" title="Ideas, Planning, & Feedback">🤔</a> <a href="#content-bmeldal" title="Content">🖋</a></td>
     <td align="center"><a href="https://gitlab.com/ninjani23"><img src="https://avatars2.githubusercontent.com/u/48680156?v=4" width="100px;" alt=""/><br /><sub><b>Ninjani</b></sub></a><br /><a href="https://github.com/SWISS-MODEL/covid-19-Annotations-on-Structures/commits?author=Ninjani" title="Code">💻</a></td>
-    <td align="center"><a href="https://github.com/akdel"><img src="https://avatars3.githubusercontent.com/u/9914131?v=4" width="100px;" alt=""/><br /><sub><b>mehmet</b></sub></a><br /><a href="#content-akdel" title="Content">🖋</a></td>
+    <td align="center"><a href="https://github.com/akdel"><img src="https://avatars3.githubusercontent.com/u/9914131?v=4" width="100px;" alt=""/><br /><sub><b>mehmet</b></sub></a><br /><a href="#content-akdel" title="Content">🖋</a> <a href="https://github.com/SWISS-MODEL/covid-19-Annotations-on-Structures/commits?author=akdel" title="Code">💻</a></td>
   </tr>
   <tr>
-    <td align="center"><a href="http://michellelynngill.com"><img src="https://avatars3.githubusercontent.com/u/1757241?v=4" width="100px;" alt=""/><br /><sub><b>Michelle Gill</b></sub></a><br /><a href="#content-mlgill" title="Content">️️️️🖋</a></td>
+    <td align="center"><a href="http://michellelynngill.com"><img src="https://avatars3.githubusercontent.com/u/1757241?v=4" width="100px;" alt=""/><br /><sub><b>Michelle Gill</b></sub></a><br /><a href="#content-mlgill" title="Content">🖋</a></td>
   </tr>
 </table>
 
