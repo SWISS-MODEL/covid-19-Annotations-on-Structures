@@ -119,7 +119,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/akdel"><img src="https://avatars3.githubusercontent.com/u/9914131?v=4" width="100px;" alt=""/><br /><sub><b>mehmet</b></sub></a><br /><a href="#content-akdel" title="Content">🖋</a> <a href="https://github.com/SWISS-MODEL/covid-19-Annotations-on-Structures/commits?author=akdel" title="Code">💻</a></td>
   </tr>
   <tr>
-    <td align="center"><a href="http://michellelynngill.com"><img src="https://avatars3.githubusercontent.com/u/1757241?v=4" width="100px;" alt=""/><br /><sub><b>Michelle Gill</b></sub></a><br /><a href="#content-mlgill" title="Content">🖋</a></td>
+    <td align="center"><a href="http://michellelynngill.com"><img src="https://avatars3.githubusercontent.com/u/1757241?v=4" width="100px;" alt=""/><br /><sub><b>Michelle Gill</b></sub></a><br /><a href="#content-mlgill" title="Content">🖋</a> <a href="https://github.com/SWISS-MODEL/covid-19-Annotations-on-Structures/commits?author=mlgill" title="Code">💻</a></td>
   </tr>
 </table>
 
