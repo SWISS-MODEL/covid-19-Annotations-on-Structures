@@ -1,0 +1,3 @@
+Solvent accessibility calculations were performed on PDB ID 6m71.
+All atoms from the PDB file were present during solvent calculation.
+Output atoms correspond to those from the reference mapper (chain C).
