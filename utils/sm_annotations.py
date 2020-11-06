@@ -122,6 +122,11 @@ class Annotation:
         if email:
             data["email"] = email
         res = requests.post(url, data=data)
+        # Ensure we didn't get an error
+        res.raise_for_status()
+        # Ensure we were redirected
+        if res.url == url:
+            raise ValueError("The submission of annotations failed")
         return res.url
 
     def __str__(self):
