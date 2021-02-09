@@ -1,3 +1,5 @@
+import base64
+import gzip
 import matplotlib as mpl
 import re
 import requests
@@ -115,12 +117,13 @@ class Annotation:
         :param title:   Filled in project title field if given
         :param email:   Filled in email field if given
         """
-        data = {"annotation_data": self.__str__()}
+        data = {}
+        files = {'annotation_file': ('annotation.csv', str(self))}
         if title:
             data["title"] = title
         if email:
             data["email"] = email
-        res = requests.post(url, data=data, allow_redirects=False)
+        res = requests.post(url, data=data, files=files, allow_redirects=False)
         # Ensure we didn't get an error
         res.raise_for_status()
         # Ensure we were redirected
