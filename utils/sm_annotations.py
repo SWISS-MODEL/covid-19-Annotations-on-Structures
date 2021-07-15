@@ -1,3 +1,5 @@
+import base64
+import gzip
 import matplotlib as mpl
 import re
 import requests
@@ -28,7 +30,7 @@ class Annotation:
     annotation.add("P0DTD1", 35, "#00FF00", "green anno")
 
     # print string which is accepted on 
-    # https://swissmodel.expasy.org/repository/user_annotation_upload
+    # https://swissmodel.expasy.org/repository/annotation
     print(annotation)
 
     # or directly do a post request (defaults to SWISS-MODEL)
@@ -101,7 +103,7 @@ class Annotation:
 
     def post(
         self,
-        url="https://swissmodel.expasy.org/repository/user_annotation_upload",
+        url="https://swissmodel.expasy.org/repository/annotation",
         title=None,
         email=None,
     ):
@@ -115,12 +117,13 @@ class Annotation:
         :param title:   Filled in project title field if given
         :param email:   Filled in email field if given
         """
-        data = {"annotation_data": self.__str__()}
+        data = {}
+        files = {'annotation_file': ('annotation.csv', str(self))}
         if title:
             data["title"] = title
         if email:
             data["email"] = email
-        res = requests.post(url, data=data, allow_redirects=False)
+        res = requests.post(url, data=data, files=files, allow_redirects=False)
         # Ensure we didn't get an error
         res.raise_for_status()
         # Ensure we were redirected
@@ -131,7 +134,7 @@ class Annotation:
     def __str__(self):
         """
         Processes annotation and return string which is accepted on
-        https://swissmodel.expasy.org/repository/user_annotation_upload
+        https://swissmodel.expasy.org/repository/annotation
         """
         n = len(self.uniprot_acs)
         formatted_annos = [self._format_anno(idx) for idx in range(n)]
