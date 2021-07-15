@@ -30,7 +30,7 @@ class Annotation:
     annotation.add("P0DTD1", 35, "#00FF00", "green anno")
 
     # print string which is accepted on 
-    # https://swissmodel.expasy.org/repository/user_annotation_upload
+    # https://swissmodel.expasy.org/repository/annotation
     print(annotation)
 
     # or directly do a post request (defaults to SWISS-MODEL)
@@ -103,7 +103,7 @@ class Annotation:
 
     def post(
         self,
-        url="https://swissmodel.expasy.org/repository/user_annotation_upload",
+        url="https://swissmodel.expasy.org/repository/annotation",
         title=None,
         email=None,
     ):
@@ -134,7 +134,7 @@ class Annotation:
     def __str__(self):
         """
         Processes annotation and return string which is accepted on
-        https://swissmodel.expasy.org/repository/user_annotation_upload
+        https://swissmodel.expasy.org/repository/annotation
         """
         n = len(self.uniprot_acs)
         formatted_annos = [self._format_anno(idx) for idx in range(n)]
