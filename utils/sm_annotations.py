@@ -6,6 +6,49 @@ import requests
 from . import uniprot
 
 
+def _get_error_message(text):
+    """Prints the error message from the SWISS-MODEL annotation upload page
+    that is returned after a failed submission.
+    
+    As SWISS-MODEL returns an HTML page, this function uses an HTML parser
+    to extract the error message. This is error-prone and might fail if the
+    remote code is updated.
+    
+    Returns the error message(s) as a formatted string.
+    
+    :param text: the HTML page containing the error message
+    :type text: :class:`str`
+    :rtype: :class:`str`
+    """
+    from html.parser import HTMLParser
+
+
+
+    class MyHTMLParser(HTMLParser):
+        search_text = False
+        errors = []
+
+        def handle_starttag(self, tag, attrs):
+            # Error message is contained in <ul class="errorlist">
+            if tag == "ul" and ("class", "errorlist") in attrs:
+                self.search_text = True
+
+        def handle_data(self, data):
+            if self.search_text:
+                self.errors.append(data)
+
+        def handle_endtag(self, tag):
+            if tag == "ul":
+                self.search_text = False
+
+    parser = MyHTMLParser()
+    parser.feed(text)
+    if parser.errors:
+        return "Error(s): %s" % ";".join(parser.errors)
+    else:
+        return "Unknown Error"
+
+
 class Annotation:
     """
     Helper class to programmatically define annotations and format according
@@ -128,7 +171,9 @@ class Annotation:
         res.raise_for_status()
         # Ensure we were redirected
         if not res.is_redirect:
-            raise ValueError("The submission of annotations failed")
+            error_msg = _get_error_message(res.text)
+            raise ValueError("The submission of annotations failed: "
+                             "%s" % error_msg)
         return res.next.url
 
     def __str__(self):
