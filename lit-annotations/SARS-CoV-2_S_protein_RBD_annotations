@@ -1,0 +1,32 @@
+P0DTC2	455	455	#DE2DA8	https://jvi.asm.org/content/94/7/e00127-20.long	Adaptive, L455 corresponds to SARS-CoV Y442
+P0DTC2	486	486	#DE2DA8	https://jvi.asm.org/content/94/7/e00127-20.long	Adaptive, F486 corresponds to SARS-CoV L472
+P0DTC2	493	493	#DE2DA8	https://jvi.asm.org/content/94/7/e00127-20.long	Adaptive, Q493 corresponds to SARS-CoV N479
+P0DTC2	494	494	#DE2DA8	https://jvi.asm.org/content/94/7/e00127-20.long	Adaptive, S494 corresponds to SARS-CoV T487		
+P0DTC2	501	501	#DE2DA8	https://jvi.asm.org/content/94/7/e00127-20.long	Adaptive, N501 corresponds to SARS-CoV T487
+P0DTC2	439	439	#FFA500	https://jvi.asm.org/content/94/7/e00127-20.long	N439 weakly conserved RBM contact site 
+P0DTC2	449	449	#FFA500	https://jvi.asm.org/content/94/7/e00127-20.long	Y449 conserved RBM contact site
+P0DTC2	453	453	#FFA500	https://jvi.asm.org/content/94/7/e00127-20.long	Y453 conserved RBM contact site
+P0DTC2	487	487	#FFA500	https://jvi.asm.org/content/94/7/e00127-20.long	N487 conserved RBM contact site
+P0DTC2	489	489	#FFA500	https://jvi.asm.org/content/94/7/e00127-20.long	Y489 conserved RBM contact site
+P0DTC2	500	500	#FFA500	https://jvi.asm.org/content/94/7/e00127-20.long	T500 conserved RBM contact site
+P0DTC2	502	502	#FFA500	https://jvi.asm.org/content/94/7/e00127-20.long	G502 conserved RBM contact site
+P0DTC2	505	505	#FFA500	https://jvi.asm.org/content/94/7/e00127-20.long	Y505 conserved RBM contact site
+P0DTC2	439	439	#FFA500	https://www.nature.com/articles/s41586-020-2179-y	N439 changed from R426 (R426 forms strong salt-bridge in SARS-CoV)
+P0DTC2	481	484	#37A944	https://www.nature.com/articles/s41586-020-2179-y	Important changes in the ACE2 binding ridge from SARS-CoV
+P0DTC2	482	485	#37A944	https://www.nature.com/articles/s41586-020-2179-y	Adapted to ACE2 N-terminal helix
+P0DTC2	480	480	#37A9C1	https://www.nature.com/articles/s41586-020-2179-y	Cysteine involved in disulfide bridge, forming loop
+P0DTC2	488	488	#37A9C1	https://www.nature.com/articles/s41586-020-2179-y	Cysteine involved in disulfide bond, forming loop
+P0DTC2	408	408	#37A944	https://www.nature.com/articles/s41586-020-2179-y	R408 (in core structure) interacts with ACE2 glycan
+P0DTC2	475	475	#A483ED	https://www.nature.com/articles/s41586-020-2179-y	ACE2 binding-relevant contact site
+P0DTC2	476	476	#A483ED	https://www.nature.com/articles/s41586-020-2179-y	ACE2 binding-relevant contact site
+P0DTC2	456	456	#A483ED	https://www.nature.com/articles/s41586-020-2179-y	ACE2 binding-relevant contact site
+P0DTC2	498	498	#A483ED	https://www.nature.com/articles/s41586-020-2179-y	ACE2 binding-relevant contact site
+P0DTC2	493	493	#A483ED	https://www.nature.com/articles/s41586-020-2179-y	Adapted to K31 in ACE2
+P0DTC2	455	455	#A483ED	https://www.nature.com/articles/s41586-020-2179-y	Adapted to E35 in ACE2
+P0DTC2	372	372	#ECD815	https://science.sciencemag.org/content/early/2020/04/02/science.abb7269/tab-pdf	A372 (T in SARS-CoV, resulting in N-glycosylation site)
+P0DTC2	370	370	#ECD815	https://science.sciencemag.org/content/early/2020/04/02/science.abb7269/tab-pdf	N370 N-glycosylation site in SARS-CoV lacking in SARS-CoV-2
+P0DTC2	384	384	#ECD815	https://science.sciencemag.org/content/early/2020/04/02/science.abb7269/tab-pdf	P384, CR3022 heavy chain interaction (Ala in SARS-CoV)
+P0DTC2	430	430	#ECD815	https://science.sciencemag.org/content/early/2020/04/02/science.abb7269/tab-pdf	T430 hydrogen bonds with CR3022 light chain (Met in SARS-CoV)
+
+
+
